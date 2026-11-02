@@ -1,0 +1,181 @@
+{
+ "elements": [
+  {
+   "type": "node",
+   "id": 3145034344,
+   "lat": 13.752487,
+   "lon": 100.4904262,
+   "tags": {
+    "amenity": "restaurant",
+    "name": "Krisa"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3568027064,
+   "lat": 13.7531327,
+   "lon": 100.4909858,
+   "tags": {
+    "amenity": "cafe",
+    "name": "Cara Cafe"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7041790736,
+   "lat": 13.7523539,
+   "lon": 100.494064,
+   "tags": {
+    "amenity": "cafe",
+    "brand": "Café Amazon",
+    "brand:wikidata": "Q43247503",
+    "brand:wikipedia": "en:Café Amazon",
+    "cuisine": "coffee_shop",
+    "name": "Café Amazon",
+    "owner": "PTT",
+    "street_vendor": "yes",
+    "takeaway": "yes",
+    "website": "http://www.cafe-amazon.com/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13257101112,
+   "lat": 13.7526374,
+   "lon": 100.4901052,
+   "tags": {
+    "amenity": "cafe",
+    "brand": "Amazon Fresh",
+    "brand:wikidata": "Q4740834",
+    "name": "Amazon Fresh",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1481442831,
+   "center": {
+    "lat": 13.7516947,
+    "lon": 100.4969328
+   },
+   "tags": {
+    "addr:district": "พระนคร",
+    "addr:housenumber": "52-54;52 54",
+    "addr:postcode": "10200",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนแพร่งภูธร",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "restaurant",
+    "building": "house",
+    "building:levels": "2",
+    "cuisine": "italian",
+    "house": "terraced",
+    "name": "Twist & Fork Pasta",
+    "opening_hours": "Fr-We 11:00-20:00",
+    "phone": "+66 99 256 4659",
+    "website": "https://linktr.ee/TWIST_AND_FORK"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1528455250,
+   "center": {
+    "lat": 13.7525597,
+    "lon": 100.4963671
+   },
+   "tags": {
+    "addr:housenumber": "59",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนอัษฎางค์",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "restaurant",
+    "building": "commercial",
+    "building:levels": "3",
+    "cuisine": "noodle",
+    "name": "ก๋วยเตี๋ยวกะเพราเนื้อ",
+    "name:th": "ก๋วยเตี๋ยวกะเพราเนื้อ"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1528455263,
+   "center": {
+    "lat": 13.7529757,
+    "lon": 100.4962811
+   },
+   "tags": {
+    "addr:housenumber": "50",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนอัษฎางค์",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "cafe",
+    "building": "commercial",
+    "name": "ริศราคาเฟ่",
+    "name:en": "Risara Cafe",
+    "name:th": "ริศราคาเฟ่"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1528537965,
+   "center": {
+    "lat": 13.7524374,
+    "lon": 100.4963571
+   },
+   "tags": {
+    "addr:district": "พระนคร",
+    "addr:postcode": "10200",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนแพร่งนรา",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "restaurant",
+    "building": "house",
+    "cuisine": "noodle",
+    "name": "ย่งเซ่งหลี",
+    "name:en": "Young Seng Lee",
+    "name:th": "ย่งเซ่งหลี"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1547414681,
+   "center": {
+    "lat": 13.7534358,
+    "lon": 100.4961857
+   },
+   "tags": {
+    "addr:district": "พระนคร",
+    "addr:housenumber": "28",
+    "addr:postcode": "10200",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนอัษฎางค์",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "cafe",
+    "building": "commercial",
+    "building:levels": "2",
+    "name": "มนตราคาเฟ่",
+    "name:th": "มนตราคาเฟ่"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1547486931,
+   "center": {
+    "lat": 13.7536777,
+    "lon": 100.4970612
+   },
+   "tags": {
+    "addr:district": "พระนคร",
+    "addr:housenumber": "58",
+    "addr:postcode": "10200",
+    "addr:province": "กรุงเทพมหานคร",
+    "addr:street": "ถนนบูรณศาสตร์",
+    "addr:subdistrict": "ศาลเจ้าพ่อเสือ",
+    "amenity": "restaurant",
+    "building": "house",
+    "name": "ตรอกครุฑคาเฟ่",
+    "name:th": "ตรอกครุฑคาเฟ่"
+   }
+  }
+ ]
+}

@@ -4,7 +4,7 @@ import type { City } from '../types'
  * 인기 도시 20곳 (TODO 1-2).
  * 위키 문서명·좌표·나라(현재 값)는 위키백과/위키데이터에서, 공항 IATA 코드는 공항의 위키데이터 항목에서 확인한 값이다.
  * 공항은 도시 좌표에서 60km 안에 있는지 확인했다.
- * radiusKm은 명소·식당을 찾을 반경으로, 섬 전체가 여행지인 곳(발리·괌)은 넓게 잡았다.
+ * radiusKm은 명소·식당을 찾을 반경으로, 섬 전체가 여행지인 괌은 넓게 잡았다. 발리는 덴파사르 중심으로 찾는다.
  */
 export const POPULAR_CITIES: City[] = [
   {
@@ -196,9 +196,10 @@ export const POPULAR_CITIES: City[] = [
     nameEn: 'Bali Island',
     country: '인도네시아',
     region: '동남아',
-    lat: -8.3564,
-    lon: 115.0719,
-    radiusKm: 15,
+    // 발리섬 위키데이터 좌표(-8.36, 115.07)는 섬 한가운데 산지라 식당이 0곳이어서, 명소·식당은 주도 덴파사르(Q11506) 좌표로 찾는다
+    lat: -8.6717,
+    lon: 115.2339,
+    radiusKm: 5,
     wikiTitle: '발리섬',
     airports: [{ iata: 'DPS', name: 'I Gusti Ngurah Rai International Airport', source: 'https://www.wikidata.org/wiki/Q1061846' }],
     source: 'https://www.wikidata.org/wiki/Q4648',

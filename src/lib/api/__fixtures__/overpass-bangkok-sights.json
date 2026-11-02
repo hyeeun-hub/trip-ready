@@ -1,0 +1,186 @@
+{
+ "elements": [
+  {
+   "type": "node",
+   "id": 1114352991,
+   "lat": 13.7263148,
+   "lon": 100.4930973,
+   "tags": {
+    "artwork_type": "statue",
+    "historic": "monument",
+    "name": "พระบรมราชานุสาวรีย์ สมเด็จพระเจ้าตากสินมหาราช",
+    "name:en": "King Taksin Monument",
+    "name:th": "พระบรมราชานุสาวรีย์ สมเด็จพระเจ้าตากสินมหาราช",
+    "tourism": "artwork",
+    "wikidata": "Q13017453",
+    "wikimedia_commons": "Category:King Taksin Monument",
+    "wikipedia": "th:พระบรมราชานุสรณ์สมเด็จพระเจ้ากรุงธนบุรี"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1872413363,
+   "lat": 13.7696454,
+   "lon": 100.4958557,
+   "tags": {
+    "man_made": "tower",
+    "name": "สะพานพระราม 8",
+    "name:en": "Rama VIII Bridge",
+    "name:th": "สะพานพระราม 8",
+    "tourism": "attraction",
+    "wikidata": "Q1092231",
+    "wikimedia_commons": "Category:Rama VIII Bridge",
+    "wikipedia": "en:Rama VIII Bridge"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1886961362,
+   "lat": 13.758211,
+   "lon": 100.4932545,
+   "tags": {
+    "historic": "memorial",
+    "image": "https://images.mapillary.com/rF5WS1ezb7VqcDBDxSPpmQ/thumb-2048.jpg",
+    "mapillary": "2990198357879972",
+    "memorial": "war_memorial",
+    "name": "อนุสาวรีย์ทหารอาสา สงครามโลกครั้งที่ 1",
+    "name:en": "Memorial of Expeditionary Force",
+    "name:th": "อนุสาวรีย์ทหารอาสา สงครามโลกครั้งที่ 1",
+    "wikidata": "Q13023636",
+    "wikimedia_commons": "Category:Monument of The Expeditionary Force, Bangkok",
+    "wikipedia": "th:อนุสาวรีย์ทหารอาสา"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2367434259,
+   "lat": 13.7406467,
+   "lon": 100.4980403,
+   "tags": {
+    "artwork_type": "statue",
+    "historic": "monument",
+    "name": "ปฐมบรมราชานุสรณ์",
+    "name:en": "King Rama I (Phra Buddha Yodfa) Statue",
+    "name:th": "ปฐมบรมราชานุสรณ์",
+    "tourism": "artwork",
+    "wikidata": "Q108821678",
+    "wikipedia": "th:ปฐมบรมราชานุสรณ์"
+   }
+  },
+  {
+   "type": "node",
+   "id": 567014290,
+   "lat": 13.7555116,
+   "lon": 100.506445,
+   "tags": {
+    "amenity": "ferry_terminal",
+    "ferry": "yes",
+    "name": "ผ่านฟ้าลีลาศ",
+    "name:en": "Phanfa Leelard",
+    "name:fr": "Phanfa Leelard",
+    "name:ru": "Phanfa Leelard",
+    "name:th": "ผ่านฟ้าลีลาศ",
+    "network": "Golden Mount Line",
+    "opening_hours": "Mo-Fr 08:00-20:00; Sa-Su 08:00-19:30",
+    "public_transport": "stop_position",
+    "ref": "W5",
+    "tourism": "attraction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3548636595,
+   "lat": 13.7558423,
+   "lon": 100.5192753,
+   "tags": {
+    "name": "หอเกียรติภูมินายกรัฐมนตรีไทย",
+    "name:en": "Thailand Prime Ministers Museum",
+    "name:pl": "Muzeum Premierów Tajlandii",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3568027060,
+   "lat": 13.753234,
+   "lon": 100.4908389,
+   "tags": {
+    "alt_name": "PSG Gallery",
+    "name": "หอศิลป์คณะจิตรกรรมประติมากรรมและภาพพิมพ์",
+    "name:en": "Faculty of Painting Sculpture and Graphic Arts Art Gallery",
+    "name:th": "หอศิลป์คณะจิตรกรรมประติมากรรมและภาพพิมพ์",
+    "tourism": "gallery"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3568027498,
+   "lat": 13.752666,
+   "lon": 100.4908979,
+   "tags": {
+    "name": "พิพิธภัณฑสถานแห่งชาติศิลป์พีระศรี",
+    "name:en": "Silp Bhirasri National Museum",
+    "name:th": "พิพิธภัณฑสถานแห่งชาติศิลป์พีระศรี",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3995523989,
+   "lat": 13.7672729,
+   "lon": 100.5030209,
+   "tags": {
+    "colour": "gold",
+    "height": "32",
+    "historic": "memorial",
+    "memorial": "statue",
+    "name": "พระพุทธศรีอริยเมตไตรย",
+    "name:en": "Phra Phuttha Si Ariyamettrai",
+    "name:ru": "Пра аммиретрай",
+    "start_date": "1927",
+    "tourism": "attraction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4200510216,
+   "lat": 13.7484049,
+   "lon": 100.4953406,
+   "tags": {
+    "historic": "monument",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/bf/อนุสาวรีย์สมเด็จพระนางเจ้าสุนันทากุมารีรัตน์_สวนสราญรมย์_01.jpg",
+    "mapillary": "936511030516128",
+    "name": "อนุสาวรีย์สมเด็จพระนางเจ้าสุนันทากุมารีรัตน์",
+    "name:en": "Queen Sunanda Kumariratana Memorial",
+    "name:th": "อนุสาวรีย์สมเด็จพระนางเจ้าสุนันทากุมารีรัตน์",
+    "opening_hours": "Mo-Su 04:30-21:00",
+    "wikidata": "Q134084086"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4257127190,
+   "lat": 13.7274865,
+   "lon": 100.4990793,
+   "tags": {
+    "addr:postcode": "100600",
+    "addr:street": "Soi Lat Ya 6, Khlong San, Bangkok",
+    "name": "Thai Bamboo Tattoo",
+    "phone": "+66895056689",
+    "tourism": "attraction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4605868307,
+   "lat": 13.7380887,
+   "lon": 100.507611,
+   "tags": {
+    "name": "ตึกเก่าบนถนนทรงวาด",
+    "name:en": "Old building at Thanon Song Wat",
+    "name:th": "ตึกเก่าบนถนนทรงวาด",
+    "tourism": "attraction"
+   }
+  }
+ ]
+}
