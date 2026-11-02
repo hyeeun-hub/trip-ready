@@ -11,9 +11,9 @@
 ## 0단계. 준비 (30분)
 - [x] 0-1. [P1] Vite + React + TypeScript 프로젝트 세팅, GitHub Public 저장소 연결 (PRD #7)
 - [x] 0-2. [P1] Vitest 설정, 샘플 테스트 1개 통과 (PRD #7)
-- [ ] 0-3. [P1] PRD.md, TODO.md, CLAUDE.md(작업 규칙) 커밋 (PRD 전체)
+- [x] 0-3. [P1] PRD.md, TODO.md, CLAUDE.md(작업 규칙) 커밋 (PRD 전체)
 - [x] 0-4. [P2] 프로젝트 스킬 작성: Todo 마무리 스킬, 외부 데이터 연동 점검 스킬 (과제 요건)
-- [ ] 0-5. [P1] GitHub Pages 배포 설정, 빈 화면이 배포 링크에서 열리는지 확인 (PRD #7)
+- [x] 0-5. [P1] GitHub Pages 배포 설정, 빈 화면이 배포 링크에서 열리는지 확인 (PRD #7)
 - 커밋 후 **push**
 
 ## 1단계. 여행 만들기와 기록 (1시간 30분)
