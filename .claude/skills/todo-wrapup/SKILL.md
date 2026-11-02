@@ -28,7 +28,9 @@ description: 여행 준비(TripReady) 프로젝트에서 TODO.md의 Todo 항목�
 6. **커밋**: `<type>(<Todo 번호>): <무엇을 했는지 한국어로>` 형식으로 쓴다.
    - type: feat, fix, test, docs, design, refactor, chore
    - 관계없는 Todo는 커밋을 나눈다. 파일 이름을 지정해 스테이징한다(`git add -A`, `git add .` 금지).
-   - 스테이징 직후 `git diff --cached --stat`으로 들어갈 파일을 확인한다. 이미 스테이징된 삭제·이동(`git rm`, `git mv`)이 엉뚱한 커밋에 섞이지 않게 한다. 섞일 위험이 있으면 `git commit -- <경로>`로 경로를 지정해 커밋한다.
+   - 커밋을 시작하기 전에 `git status --short`로 이미 스테이징된 것(특히 `git rm`·`git mv`로 미리 스테이징된 삭제·이동)이 있는지 보고, 있으면 `git reset`으로 모두 내린 뒤 커밋마다 다시 스테이징한다.
+   - 스테이징 직후 `git diff --cached --name-status`로 이번 커밋에 들어갈 파일만 있는지 확인한다.
+   - `git commit -- <경로>`는 git이 이미 아는 파일에만 쓸 수 있다(새 파일이 섞이면 실패). 새 파일이 있으면 위 방법(내리고 다시 스테이징)을 쓴다.
    - 커밋 명령은 `&&`로 이어 하나가 실패하면 뒤 커밋·push가 실행되지 않게 한다. 기능 커밋보다 문서 커밋이 먼저 push되지 않게 한다.
    - push 후 배포 워크플로 결과(`gh run watch`)를 확인한다. 실패하면 force push 없이 고치는 커밋을 추가하고 보고에 적는다.
    - 커밋·push 시점은 `.claude/CLAUDE.md`의 작업 규칙을 따른다.
