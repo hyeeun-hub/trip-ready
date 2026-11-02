@@ -91,3 +91,20 @@ export function migrateMemos(trip: Trip): Trip {
     .map((m) => ({ id: `memo-${m.id}`, date: m.date, slot: 'other', caption: m.text, createdAt: `${m.date}T00:00:00.000Z` }))
   return { ...trip, memos: [], journal: [...journalOf(trip), ...moved] }
 }
+
+export interface JournalPhoto {
+  trip: Trip
+  entry: JournalEntry
+  dayLabel: string
+}
+
+/** 여러 여행의 기록을 한 번에 (여행 기록 페이지, TODO 10-1): 최근 여행 먼저, 여행 안에서는 일차·때 순서 */
+export function tripsWithJournal(trips: Trip[]): Trip[] {
+  return trips.filter((t) => journalOf(t).length > 0).sort((a, b) => b.departDate.localeCompare(a.departDate))
+}
+
+export function allPhotos(trips: Trip[]): JournalPhoto[] {
+  return tripsWithJournal(trips).flatMap((trip) =>
+    groupByDay(trip).flatMap((d) => d.entries.filter((e) => e.photoId).map((entry) => ({ trip, entry, dayLabel: d.label }))),
+  )
+}

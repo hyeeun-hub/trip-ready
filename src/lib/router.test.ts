@@ -12,6 +12,7 @@ describe('페이지 주소', () => {
     { page: 'new', cityId: 'tokyo' },
     { page: 'new' },
     { page: 'trips' },
+    { page: 'journal' },
     { page: 'trip', tripId: 'abc-123', tab: 'overview' },
     { page: 'trip', tripId: 'abc-123', tab: 'saved' },
     { page: 'trip', tripId: 'abc-123', tab: 'budget' },

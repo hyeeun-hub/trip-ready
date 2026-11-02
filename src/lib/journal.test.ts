@@ -73,3 +73,17 @@ describe('메모를 여행 기록으로 옮기기 (8-1)', () => {
     expect(migrateMemos(t)).toBe(t)
   })
 })
+
+describe('여러 여행 기록 모아 보기 (10-1)', () => {
+  it('기록 있는 여행만, 최근 여행 먼저, 사진은 여행·일차 순서', async () => {
+    const { allPhotos, tripsWithJournal } = await import('./journal')
+    const older = sampleTrip({ id: 'old', departDate: '2026-03-01', returnDate: '2026-03-03', journal: [entry('o1', '2026-03-01', 'lunch', { photoId: 'p-o1' })] })
+    const newer = sampleTrip({
+      id: 'new',
+      journal: [entry('n2', '2026-12-02', 'lunch', { photoId: 'p-n2' }), entry('n1', '2026-12-01', 'dinner', { photoId: 'p-n1' }), entry('n3', '2026-12-01', 'lunch')],
+    })
+    const empty = sampleTrip({ id: 'empty' })
+    expect(tripsWithJournal([older, empty, newer]).map((t) => t.id)).toEqual(['new', 'old'])
+    expect(allPhotos([older, empty, newer]).map((p) => `${p.trip.id}:${p.entry.id}:${p.dayLabel}`)).toEqual(['new:n1:1일차', 'new:n2:2일차', 'old:o1:1일차'])
+  })
+})

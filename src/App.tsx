@@ -3,6 +3,7 @@ import { BackLink } from './components/BackLink'
 import { CityPage } from './components/CityPage'
 import { ExplorePage } from './components/ExplorePage'
 import { HomePage } from './components/HomePage'
+import { JournalPage } from './components/JournalPage'
 import { NavBar } from './components/NavBar'
 import { NewTripPage } from './components/NewTripPage'
 import { PlaceRoute } from './components/PlaceRoute'
@@ -68,6 +69,8 @@ function App() {
         return <NewTripPage key={route.cityId ?? ''} city={route.cityId ? findCity(route.cityId, trips) : undefined} onCreate={handleCreate} />
       case 'trips':
         return <TripsPage trips={trips} today={today} />
+      case 'journal':
+        return <JournalPage trips={trips} />
       case 'trip': {
         const trip = trips.find((t) => t.id === route.tripId)
         return trip ? (

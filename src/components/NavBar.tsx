@@ -4,6 +4,7 @@ const LINKS: { label: string; route: Route; match: Route['page'][] }[] = [
   { label: '홈', route: { page: 'home' }, match: ['home'] },
   { label: '여행지', route: { page: 'explore' }, match: ['explore', 'city', 'place'] },
   { label: '내 여행', route: { page: 'trips' }, match: ['trips', 'trip'] },
+  { label: '여행 기록', route: { page: 'journal' }, match: ['journal'] },
 ]
 
 /** 위쪽 고정 메뉴: 로고, 페이지 링크, 여행 만들기 버튼 */

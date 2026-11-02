@@ -10,6 +10,7 @@ export type Route =
   | { page: 'city'; cityId: string; tab: CityTab }
   | { page: 'new'; cityId?: string }
   | { page: 'trips' }
+  | { page: 'journal' }
   | { page: 'trip'; tripId: string; tab: TripTab }
   | { page: 'place'; cityId: string; placeId: string }
 
@@ -32,6 +33,8 @@ export function parseRoute(hash: string): Route {
       return { page: 'new', cityId: parts[1] }
     case 'trips':
       return { page: 'trips' }
+    case 'journal':
+      return { page: 'journal' }
     case 'trip':
       if (!parts[1]) break
       return { page: 'trip', tripId: parts[1], tab: TRIP_TABS.includes(parts[2] as TripTab) ? (parts[2] as TripTab) : 'overview' }
@@ -55,6 +58,8 @@ export function href(route: Route): string {
       return route.cityId ? `#/new/${e(route.cityId)}` : '#/new'
     case 'trips':
       return '#/trips'
+    case 'journal':
+      return '#/journal'
     case 'trip':
       return `#/trip/${e(route.tripId)}${route.tab === 'overview' ? '' : `/${route.tab}`}`
     case 'place':
