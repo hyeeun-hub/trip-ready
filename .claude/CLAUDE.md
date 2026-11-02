@@ -10,6 +10,7 @@
 React + TypeScript + Vite, 저장은 localStorage, 테스트는 Vitest, 배포는 GitHub Pages. (PRD #7)
 
 - `npm test` 단위 테스트, `npm run build` 타입 검사 + 빌드, `npm run lint` 린트, `npm run dev` 개발 서버
+- `npm run places:update`: 인기 도시 20곳 명소·식당을 Overpass에서 다시 받아 `src/data/places/`에 저장(네트워크 사용, 오래 걸림, `CITIES=tokyo,osaka`로 일부만)
 - 외부 API는 **키 없이** 쓰는 위키백과 REST API, 오픈스트리트맵 Overpass·Nominatim·지도 타일만 쓴다.
 - 지도는 Leaflet(사용자 동의, 7단계)으로 그린다. 오픈스트리트맵 타일 정책: 지도 위 출처 표시, Referer 유지, 타일 미리 받기(오프라인 저장) 금지.
 - 새 라이브러리가 필요하면 **이유를 먼저 말하고 사용자 동의를 받은 뒤** 추가한다.
@@ -68,3 +69,4 @@ React + TypeScript + Vite, 저장은 localStorage, 테스트는 Vitest, 배포�
 | todo-wrapup | 6-3, 7-4 (재촬영) | 스크린숏 9장을 다시 찍으며 공개 서버 오류 때 지도 전체가 실패하는 문제를 찾아 부분 표시로 고치고 테스트 3개 추가, 변경 내역 2줄 |
 | todo-wrapup | 8-1~8-4 | 테스트 109개(일차·기록·콜라주 배치·사진 크기·내보내기/불러오기)와 4032px 사진을 만들어 올리는 브라우저 확인(타임라인·콜라주·새로고침·삭제 시 사진 삭제·다른 여행으로 불러오기) 후 체크, 변경 내역 2줄 |
 | todo-wrapup | 8단계 커밋 (스킬 개선) | 미리 스테이징된 Memos.tsx 삭제가 콜라주 커밋에 또 섞이고 `git commit -- <경로>`가 새 파일 때문에 실패함. push 전에 되돌려 커밋 4개를 다시 만들고, 스킬 6번에 "시작 전 `git status`로 미리 스테이징된 것을 내리기·`--name-status` 확인·경로 지정 커밋의 한계"를 추가 |
+| todo-wrapup | 10-1~10-4 | 테스트 116개·데스크톱/모바일 확인(앨범·타임라인·템플릿 4종을 한 장에 모아 비교) 후 체크, 변경 내역 2줄, 9단계와 같은 파일(App.tsx)을 나눠 커밋 |
