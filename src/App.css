@@ -1669,6 +1669,12 @@ button:disabled {
   flex-wrap: wrap;
 }
 
+/* 좁은 화면에서 "폴라로이드"가 두 줄로 깨지지 않게: 글자는 한 줄, 넘치면 버튼 줄이 바뀜 */
+.segmented.wrap button {
+  white-space: nowrap;
+  padding: 8px 6px;
+}
+
 .album-grid {
   list-style: none;
   padding: 0;
