@@ -32,8 +32,11 @@ export function parseWon(input: string): number | null {
   return Number.isSafeInteger(value) ? value : null
 }
 
+// 한국어 숫자 형식 데이터를 처음 불러올 때 느린 환경(GitHub Actions에서 5초 넘게 걸림)이 있어 한 번만 만든다
+const wonFormat = new Intl.NumberFormat('ko-KR')
+
 export function formatWon(value: number): string {
-  return `${new Intl.NumberFormat('ko-KR').format(value)}원`
+  return `${wonFormat.format(value)}원`
 }
 
 export function setTotal(trip: Trip, total: number): Trip {
