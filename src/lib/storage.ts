@@ -32,7 +32,11 @@ function isTrip(value: unknown): value is Trip {
     Array.isArray(t.memos) &&
     (t.savedPlaces === undefined ||
       (Array.isArray(t.savedPlaces) &&
-        t.savedPlaces.every((s: { place?: { id?: unknown } }) => typeof s?.place?.id === 'string')))
+        t.savedPlaces.every((s: { place?: { id?: unknown } }) => typeof s?.place?.id === 'string'))) &&
+    (t.budget === undefined || (typeof t.budget === 'object' && t.budget !== null && typeof (t.budget as { total?: unknown }).total === 'number')) &&
+    (t.expenses === undefined ||
+      (Array.isArray(t.expenses) &&
+        t.expenses.every((e: { id?: unknown; amount?: unknown; date?: unknown }) => typeof e?.id === 'string' && typeof e.amount === 'number' && isISODate(e.date))))
   )
 }
 

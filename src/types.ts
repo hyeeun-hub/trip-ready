@@ -54,6 +54,24 @@ export interface SavedPlace {
   savedAt: string
 }
 
+/** 예산 항목 (PRD F4) */
+export type BudgetCategory = 'flight' | 'lodging' | 'food' | 'transport' | 'sights' | 'shopping' | 'other'
+
+/** 예산 (원). 항목별 예산은 정하지 않아도 된다. */
+export interface Budget {
+  total: number
+  byCategory: Partial<Record<BudgetCategory, number>>
+}
+
+export interface Expense {
+  id: string
+  date: ISODate
+  category: BudgetCategory
+  /** 원 단위 금액 (양의 정수) */
+  amount: number
+  memo: string
+}
+
 /** 여행 (PRD F1, F5) */
 export interface Trip {
   id: string
@@ -68,6 +86,9 @@ export interface Trip {
   memos: TripMemo[]
   /** 가고 싶은 곳 (3단계에서 추가, 예전 데이터에는 없을 수 있음) */
   savedPlaces?: SavedPlace[]
+  /** 예산과 지출 (4단계에서 추가) */
+  budget?: Budget
+  expenses?: Expense[]
   createdAt: string
 }
 

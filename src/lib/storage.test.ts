@@ -42,4 +42,13 @@ describe('여행 저장·불러오기 (1-4)', () => {
     const store = memoryStore({ [TRIPS_KEY]: JSON.stringify([ok, broken]) })
     expect(loadTrips(store)).toEqual([ok])
   })
+  it('예산과 지출도 저장되고, 금액이 숫자가 아닌 지출이 있는 여행은 건너뛴다 (4단계)', () => {
+    const ok = sampleTrip({
+      id: 'ok',
+      budget: { total: 1_000_000, byCategory: { food: 200_000 } },
+      expenses: [{ id: 'e1', date: '2026-12-02', category: 'food', amount: 12_000, memo: '라멘' }],
+    })
+    const broken = { ...sampleTrip({ id: 'broken' }), expenses: [{ id: 'e2', date: '2026-12-02', category: 'food', amount: '12000', memo: '' }] }
+    expect(loadTrips(memoryStore({ [TRIPS_KEY]: JSON.stringify([ok, broken]) }))).toEqual([ok])
+  })
 })
