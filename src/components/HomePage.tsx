@@ -14,7 +14,7 @@ interface Props {
 const STEPS = [
   { icon: '🔎', title: '여행지 고르기', text: '인기 도시 20곳을 고르거나 원하는 도시를 검색해요.', link: href({ page: 'explore' }) },
   { icon: '📌', title: '정보 모으고 저장하기', text: '소개·명소·식당·항공권을 한 번에 보고, 가고 싶은 곳을 저장해요.', link: href({ page: 'new' }) },
-  { icon: '🧳', title: '준비하고 떠나기', text: '준비물을 체크하고 여행 메모를 남겨요.', link: href({ page: 'trips' }) },
+  { icon: '🧳', title: '준비하고 떠나기', text: '예산·준비물을 챙기고, 여행 중엔 사진으로 기록해요.', link: href({ page: 'trips' }) },
 ]
 
 /** 홈: 히어로·인기 여행지·이렇게 준비해요·다가오는 여행 */
