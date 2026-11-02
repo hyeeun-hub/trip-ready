@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CATEGORY_LABELS, loadPlaces, topCuisines, type Place, type PlaceCategory, type PlaceKind } from '../lib/api/overpass'
-import { loadCitySummary } from '../lib/api/wikipedia'
 import { flightLinks } from '../lib/flights'
+import { cityIntro } from '../lib/intro'
 import { cuisineLabel, filterPlaces } from '../lib/places'
 import { useAsync } from '../lib/useAsync'
 import type { City } from '../types'
@@ -63,28 +63,13 @@ interface IntroProps {
   travelers?: number
 }
 
-/** 도시 소개(위키백과)와 항공권 검색 링크 (TODO 2-2, 2-5) */
+/** 도시 소개(짧은 2~3줄)와 항공권 검색 링크 (TODO 2-5, 7-1) */
 export function CityIntro({ city, originIata, departDate, returnDate, travelers }: IntroProps) {
-  const summary = useAsync(`summary:${city.id}`, () => loadCitySummary(city))
   return (
     <>
-      <AsyncView state={summary} loading="위키백과에서 소개를 불러오는 중이에요.">
-        {(s) =>
-          s ? (
-            <section className="quote-card">
-              <p className="quote">"{s.extract.length > 220 ? `${s.extract.slice(0, 220)}…` : s.extract}"</p>
-              <p className="source">
-                출처:{' '}
-                <a href={s.pageUrl} target="_blank" rel="noreferrer">
-                  위키백과 ({s.lang === 'ko' ? '한국어' : '영어'}) - {s.title}
-                </a>
-              </p>
-            </section>
-          ) : (
-            <p className="muted">위키백과에서 이 도시 소개를 찾지 못했어요.</p>
-          )
-        }
-      </AsyncView>
+      <section className="quote-card">
+        <p className="quote">"{cityIntro(city)}"</p>
+      </section>
 
       <section className="card">
         <h3>항공권 검색</h3>

@@ -19,6 +19,8 @@ export interface City {
   country: string
   /** 인기 도시를 거르는 지역 묶음 (검색 도시는 '검색') */
   region: string
+  /** 검색 도시의 주·도 같은 상위 지역 (Nominatim address.state) */
+  area?: string
   lat: number
   lon: number
   /** 명소·식당을 찾을 반경(km) */

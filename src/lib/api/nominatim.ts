@@ -28,7 +28,7 @@ interface RawPlace {
   lon: string
   name?: string
   display_name: string
-  address?: { country?: string }
+  address?: { country?: string; state?: string; province?: string }
   namedetails?: Record<string, string>
 }
 
@@ -47,6 +47,7 @@ export function parseSearch(raw: RawPlace[]): City[] {
       nameEn: r.namedetails?.['name:en'] ?? r.namedetails?.name ?? name,
       country: r.address?.country ?? '',
       region: '검색',
+      area: r.address?.state ?? r.address?.province,
       lat: Number(r.lat),
       lon: Number(r.lon),
       radiusKm: 3,
