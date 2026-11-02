@@ -23,7 +23,7 @@ interface Props {
 
 /** 금액 입력칸: 포커스를 잃을 때 저장, 숫자가 아니면 오류 */
 function WonInput({ value, label, onSave }: { value: number; label: string; onSave: (value: number) => void }) {
-  const [text, setText] = useState(value ? String(value) : '')
+  const [text, setText] = useState(value ? value.toLocaleString('ko-KR') : '')
   const [invalid, setInvalid] = useState(false)
   return (
     <span className="won-field">
@@ -38,6 +38,7 @@ function WonInput({ value, label, onSave }: { value: number; label: string; onSa
         onBlur={() => {
           const parsed = parseWon(text)
           setInvalid(parsed === null)
+          if (parsed !== null) setText(parsed ? parsed.toLocaleString('ko-KR') : '')
           if (parsed !== null && parsed !== value) onSave(parsed)
         }}
       />
@@ -210,13 +211,15 @@ export function BudgetTab({ trip, today, onUpdate }: Props) {
                   <span className="expense-main">
                     <span className="tag">{CATEGORY_NAMES[e.category]}</span> {e.memo}
                   </span>
-                  <strong>{formatWon(e.amount)}</strong>
-                  <button type="button" className="text-button" onClick={() => setEditingId(e.id)}>
-                    수정
-                  </button>
-                  <button type="button" className="text-button" onClick={() => onUpdate(removeExpense(trip, e.id))}>
-                    삭제
-                  </button>
+                  <strong className="expense-amount">{formatWon(e.amount)}</strong>
+                  <span className="expense-actions">
+                    <button type="button" className="text-button" onClick={() => setEditingId(e.id)}>
+                      수정
+                    </button>
+                    <button type="button" className="text-button" onClick={() => onUpdate(removeExpense(trip, e.id))}>
+                      삭제
+                    </button>
+                  </span>
                 </li>
               ),
             )}

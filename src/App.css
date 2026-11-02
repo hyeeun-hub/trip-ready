@@ -1399,12 +1399,38 @@ select {
 }
 
 .expense-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas: 'date main amount actions';
   align-items: center;
-  gap: 8px;
-  padding: 8px 0;
+  gap: 4px 10px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--surface);
   font-size: 0.9rem;
+}
+
+.expense-list .memo-date {
+  grid-area: date;
+}
+
+.expense-amount {
+  grid-area: amount;
+  text-align: right;
+}
+
+.expense-actions {
+  grid-area: actions;
+  white-space: nowrap;
+}
+
+/* 좁은 화면: 날짜·금액·버튼 한 줄, 항목·메모는 다음 줄 */
+@media (max-width: 600px) {
+  .expense-list li {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas:
+      'date amount actions'
+      'main main main';
+  }
 }
 
 .expense-list li.editing {
@@ -1412,7 +1438,7 @@ select {
 }
 
 .expense-main {
-  flex: 1;
+  grid-area: main;
   min-width: 0;
   overflow: hidden;
   display: -webkit-box;
