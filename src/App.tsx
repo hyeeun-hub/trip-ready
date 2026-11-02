@@ -13,6 +13,8 @@ import { todayISO } from './lib/date'
 import { goToTrip } from './lib/navigation'
 import { href, navigate, useRoute } from './lib/router'
 import { loadTrips, saveTrips } from './lib/storage'
+import { deleteTripPhotos } from './lib/journalBackup'
+import { indexedDbPhotos } from './lib/photoStore'
 import { createTrip } from './lib/trips'
 import type { NewTrip, Trip } from './types'
 import './App.css'
@@ -75,6 +77,7 @@ function App() {
             today={today}
             onUpdate={updateTrip}
             onDelete={() => {
+              void deleteTripPhotos(trip, indexedDbPhotos).catch(() => {})
               updateTrips(trips.filter((t) => t.id !== trip.id))
               navigate({ page: 'trips' })
             }}

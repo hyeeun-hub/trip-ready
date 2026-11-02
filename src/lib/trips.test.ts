@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { POPULAR_CITIES } from '../data/cities'
 import { sampleTrip } from '../test/fixtures'
-import { addMemo, createTrip, dDayLabel, removeMemo, splitTrips, validateNewTrip } from './trips'
+import { createTrip, dDayLabel, splitTrips, validateNewTrip } from './trips'
 
 const input = {
   city: POPULAR_CITIES[1],
@@ -51,15 +51,3 @@ describe('여행 목록 나누기 (1-3)', () => {
   })
 })
 
-describe('여행 메모 (1-6)', () => {
-  it('날짜순으로 쌓이고 빈 메모는 무시한다', () => {
-    let trip = addMemo(sampleTrip(), '2026-12-03', '야시장', 'b')
-    trip = addMemo(trip, '2026-12-01', ' 도착 ', 'a')
-    expect(trip.memos.map((m) => [m.id, m.text])).toEqual([
-      ['a', '도착'],
-      ['b', '야시장'],
-    ])
-    expect(addMemo(trip, '2026-12-04', '  ')).toBe(trip)
-    expect(removeMemo(trip, 'a').memos.map((m) => m.id)).toEqual(['b'])
-  })
-})

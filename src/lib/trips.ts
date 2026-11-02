@@ -1,4 +1,4 @@
-import type { NewTrip, Trip, TripMemo } from '../types'
+import type { NewTrip, Trip } from '../types'
 import { defaultChecklist } from './checklist'
 import { daysBetween } from './date'
 
@@ -26,18 +26,6 @@ export function splitTrips(trips: Trip[], today: string): { upcoming: Trip[]; pa
   const upcoming = trips.filter((t) => t.returnDate >= today).sort((a, b) => a.departDate.localeCompare(b.departDate))
   const past = trips.filter((t) => t.returnDate < today).sort((a, b) => b.departDate.localeCompare(a.departDate))
   return { upcoming, past }
-}
-
-/** 메모 추가 (빈 메모는 무시), 날짜순 정렬 */
-export function addMemo(trip: Trip, date: string, text: string, id: string = crypto.randomUUID()): Trip {
-  const body = text.trim()
-  if (!body) return trip
-  const memos: TripMemo[] = [...trip.memos, { id, date, text: body }].sort((a, b) => a.date.localeCompare(b.date))
-  return { ...trip, memos }
-}
-
-export function removeMemo(trip: Trip, id: string): Trip {
-  return { ...trip, memos: trip.memos.filter((m) => m.id !== id) }
 }
 
 /** D-day 표시 */

@@ -4,14 +4,15 @@ import { openPlace } from '../lib/navigation'
 import { href, type TripTab } from '../lib/router'
 import { toPoints } from '../lib/mapPoints'
 import { savedPlaces } from '../lib/saved'
-import { addMemo, dDayLabel, removeMemo } from '../lib/trips'
+import { journalOf } from '../lib/journal'
+import { dDayLabel } from '../lib/trips'
 import type { Trip } from '../types'
 import { BackLink } from './BackLink'
 import { BudgetTab } from './BudgetTab'
 import { Checklist } from './Checklist'
 import { CityIntro, CityPlaces } from './CityInfo'
 import { CityPhoto } from './CityPhoto'
-import { Memos } from './Memos'
+import { JournalTab } from './JournalTab'
 import { PlaceMap } from './PlaceMap'
 import { SavedPlaces } from './SavedPlaces'
 import { Tabs } from './Tabs'
@@ -24,7 +25,7 @@ interface Props {
   onDelete: () => void
 }
 
-/** 내 여행: 탭(한눈에 / 가고 싶은 곳 / 예산 / 준비물 / 메모 / 둘러보기) */
+/** 내 여행: 탭(한눈에 / 가고 싶은 곳 / 예산 / 준비물 / 여행 기록 / 둘러보기) */
 export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
   const saved = savedPlaces(trip)
   const money = summarize(trip)
@@ -52,7 +53,7 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
           { value: 'saved', label: `가고 싶은 곳 ${saved.length}`, route: route('saved') },
           { value: 'budget', label: '예산', route: route('budget') },
           { value: 'prep', label: '준비물', route: route('prep') },
-          { value: 'memo', label: '메모', route: route('memo') },
+          { value: 'journal', label: '여행 기록', route: route('journal') },
           { value: 'explore', label: '둘러보기', route: route('explore') },
         ]}
       />
@@ -77,10 +78,12 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
               <span className="summary-value">{money.usedPercent === null ? formatWon(money.spent) : `${money.usedPercent}%`}</span>
               <span className="muted">{money.total > 0 ? `남은 돈 ${formatWon(money.remaining)}` : '총예산 미정'}</span>
             </a>
-            <a className="summary-card" href={href(route('memo'))}>
-              <span className="summary-label">메모</span>
-              <span className="summary-value">{trip.memos.length}개</span>
-              <span className="muted">{trip.memos.at(-1)?.text ?? '아직 없어요'}</span>
+            <a className="summary-card" href={href(route('journal'))}>
+              <span className="summary-label">여행 기록</span>
+              <span className="summary-value">{journalOf(trip).length}개</span>
+              <span className="muted">
+                사진 {journalOf(trip).filter((e) => e.photoId).length}장 · {journalOf(trip).at(-1)?.caption || '아직 없어요'}
+              </span>
             </a>
           </div>
           <CityIntro city={trip.city} originIata={trip.originIata} departDate={trip.departDate} returnDate={trip.returnDate} travelers={trip.travelers} />
@@ -93,7 +96,7 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
             type="button"
             className="danger"
             onClick={() => {
-              if (confirm('이 여행을 삭제할까요? 체크리스트·메모·저장한 곳도 함께 지워집니다.')) onDelete()
+              if (confirm('이 여행을 삭제할까요? 체크리스트·여행 기록(사진 포함)·저장한 곳도 함께 지워집니다.')) onDelete()
             }}
           >
             여행 삭제
@@ -135,14 +138,7 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
 
       {tab === 'prep' && <Checklist items={trip.checklist} onChange={(checklist) => onUpdate({ ...trip, checklist })} />}
 
-      {tab === 'memo' && (
-        <Memos
-          memos={trip.memos}
-          defaultDate={today < trip.departDate ? trip.departDate : today > trip.returnDate ? trip.returnDate : today}
-          onAdd={(date, text) => onUpdate(addMemo(trip, date, text))}
-          onRemove={(id) => onUpdate(removeMemo(trip, id))}
-        />
-      )}
+      {tab === 'journal' && <JournalTab trip={trip} today={today} onUpdate={onUpdate} />}
 
       {tab === 'explore' && (
         <CityPlaces city={trip.city} savedIds={new Set(saved.map((s) => s.place.id))} onOpenPlace={(p) => openPlace(trip.city, p)} />

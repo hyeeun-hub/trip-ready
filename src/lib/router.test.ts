@@ -15,6 +15,7 @@ describe('페이지 주소', () => {
     { page: 'trip', tripId: 'abc-123', tab: 'overview' },
     { page: 'trip', tripId: 'abc-123', tab: 'saved' },
     { page: 'trip', tripId: 'abc-123', tab: 'budget' },
+    { page: 'trip', tripId: 'abc-123', tab: 'journal' },
     { page: 'place', cityId: 'tokyo', placeId: 'way-42' },
   ]
 
@@ -28,5 +29,6 @@ describe('페이지 주소', () => {
     expect(parseRoute('#/city')).toEqual({ page: 'home' })
     expect(parseRoute('#/city/tokyo/nope')).toEqual({ page: 'city', cityId: 'tokyo', tab: 'about' })
     expect(parseRoute('#/trip/x/nope')).toEqual({ page: 'trip', tripId: 'x', tab: 'overview' })
+    expect(parseRoute('#/trip/x/memo')).toEqual({ page: 'trip', tripId: 'x', tab: 'journal' })
   })
 })

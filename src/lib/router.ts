@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export type CityTab = 'about' | 'sights' | 'food' | 'map'
-export type TripTab = 'overview' | 'saved' | 'budget' | 'prep' | 'memo' | 'explore'
+export type TripTab = 'overview' | 'saved' | 'budget' | 'prep' | 'journal' | 'explore'
 
 /** 페이지 주소 (#/...). 서버 없이 GitHub Pages에서 동작하고, 브라우저 뒤로 가기가 된다. */
 export type Route =
@@ -14,11 +14,13 @@ export type Route =
   | { page: 'place'; cityId: string; placeId: string }
 
 const CITY_TABS: CityTab[] = ['about', 'sights', 'food', 'map']
-const TRIP_TABS: TripTab[] = ['overview', 'saved', 'budget', 'prep', 'memo', 'explore']
+const TRIP_TABS: TripTab[] = ['overview', 'saved', 'budget', 'prep', 'journal', 'explore']
 
 export function parseRoute(hash: string): Route {
   const [path, search = ''] = hash.replace(/^#/, '').split('?')
   const parts = path.split('/').filter(Boolean).map(decodeURIComponent)
+  // 메모 탭은 여행 기록 탭으로 합쳐졌다(8단계): 예전 주소 #/trip/x/memo 도 기록 탭으로 연다
+  if (parts[0] === 'trip' && parts[2] === 'memo') parts[2] = 'journal'
   const params = new URLSearchParams(search)
   switch (parts[0]) {
     case 'explore':
