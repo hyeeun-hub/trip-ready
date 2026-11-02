@@ -1,4 +1,5 @@
-import type { Place } from './api/overpass'
+import type { City } from '../types'
+import { loadPlaces, type Place, type PlaceKind } from './api/overpass'
 
 export interface MapPoint {
   id: string
@@ -36,4 +37,21 @@ export function boundsOf(points: { lat: number; lon: number }[]): [[number, numb
 export function uniquePlaces(lists: Place[][]): Place[] {
   const seen = new Set<string>()
   return lists.flat().filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true)))
+}
+
+const KINDS: PlaceKind[] = ['sights', 'food']
+
+/**
+ * 지도용 장소: 명소·식당을 따로 불러와 하나라도 오면 쓴다. 둘 다 실패해야 오류로 본다.
+ * (공개 서버가 붐빌 때 식당만 실패해도 지도 전체가 안 보이던 문제, TODO 7-4)
+ */
+export async function loadMapPlaces(
+  city: City,
+  load: (city: City, kind: PlaceKind) => Promise<Place[]> = loadPlaces,
+): Promise<{ places: Place[]; failed: PlaceKind[] }> {
+  const results = await Promise.allSettled(KINDS.map((k) => load(city, k)))
+  const failed = KINDS.filter((_, i) => results[i].status === 'rejected')
+  if (failed.length === KINDS.length) throw (results[0] as PromiseRejectedResult).reason
+  const lists = results.map((r) => (r.status === 'fulfilled' ? r.value : []))
+  return { places: uniquePlaces(lists), failed }
 }
