@@ -19,5 +19,8 @@ export function todayISO(now: Date = new Date()): string {
 }
 
 export function isISODate(value: unknown): value is string {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && addDays(value, 0) === value
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  // "2026-13-01"처럼 없는 달은 Date가 Invalid Date가 되어 addDays가 오류를 낸다
+  if (Number.isNaN(Date.parse(`${value}T00:00:00Z`))) return false
+  return addDays(value, 0) === value
 }
