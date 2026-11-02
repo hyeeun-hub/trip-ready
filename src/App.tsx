@@ -48,7 +48,13 @@ function App() {
         </p>
       )}
       {view.name === 'place' ? (
-        <PlaceDetail place={view.place} city={view.city} onBack={() => go(view.back)} />
+        <PlaceDetail
+          place={view.place}
+          city={view.city}
+          trips={trips}
+          onUpdateTrip={(next) => updateTrips(trips.map((t) => (t.id === next.id ? next : t)))}
+          onBack={() => go(view.back)}
+        />
       ) : view.name === 'city' ? (
         <CityPage
           city={view.city}

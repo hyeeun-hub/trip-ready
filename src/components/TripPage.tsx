@@ -1,3 +1,4 @@
+import { savedPlaces } from '../lib/saved'
 import { addMemo, dDayLabel, removeMemo } from '../lib/trips'
 import type { Place } from '../lib/api/overpass'
 import type { Trip } from '../types'
@@ -6,6 +7,7 @@ import { CityInfo } from './CityInfo'
 import { CityPhoto } from './CityPhoto'
 import { Header } from './Header'
 import { Memos } from './Memos'
+import { SavedPlaces } from './SavedPlaces'
 
 interface Props {
   trip: Trip
@@ -30,6 +32,7 @@ export function TripPage({ trip, today, onBack, onUpdate, onDelete, onOpenPlace 
           {trip.originName} 출발 · {trip.departDate} ~ {trip.returnDate} · {trip.travelers}명
         </p>
 
+        <SavedPlaces trip={trip} onUpdate={onUpdate} onOpenPlace={onOpenPlace} />
         <Checklist items={trip.checklist} onChange={(checklist) => onUpdate({ ...trip, checklist })} />
         <Memos
           memos={trip.memos}
@@ -45,6 +48,7 @@ export function TripPage({ trip, today, onBack, onUpdate, onDelete, onOpenPlace 
           departDate={trip.departDate}
           returnDate={trip.returnDate}
           travelers={trip.travelers}
+          savedIds={new Set(savedPlaces(trip).map((s) => s.place.id))}
           onOpenPlace={onOpenPlace}
         />
 

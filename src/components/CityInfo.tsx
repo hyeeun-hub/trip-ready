@@ -14,12 +14,14 @@ interface Props {
   departDate?: string
   returnDate?: string
   travelers?: number
+  /** 이 여행에 저장한 장소 id (카드에 ♥ 표시) */
+  savedIds?: ReadonlySet<string>
   onOpenPlace: (place: Place) => void
 }
 
 const SIGHT_CATEGORIES: PlaceCategory[] = ['attraction', 'museum', 'viewpoint', 'history', 'park']
 
-function PlaceList({ city, kind, onOpenPlace }: { city: City; kind: PlaceKind; onOpenPlace: (p: Place) => void }) {
+function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; kind: PlaceKind; savedIds?: ReadonlySet<string>; onOpenPlace: (p: Place) => void }) {
   const [filter, setFilter] = useState('all')
   const places = useAsync(`places:${kind}:${city.id}`, () => loadPlaces(city, kind))
 
@@ -54,7 +56,7 @@ function PlaceList({ city, kind, onOpenPlace }: { city: City; kind: PlaceKind; o
             </div>
             <div className="card-grid">
               {shown.map((p) => (
-                <PlaceCard key={p.id} place={p} onOpen={onOpenPlace} />
+                <PlaceCard key={p.id} place={p} saved={savedIds?.has(p.id)} onOpen={onOpenPlace} />
               ))}
             </div>
           </>
@@ -65,7 +67,7 @@ function PlaceList({ city, kind, onOpenPlace }: { city: City; kind: PlaceKind; o
 }
 
 /** 여행지 한눈에 보기: 소개·항공권·명소·식당 (TODO 2-2~2-7) */
-export function CityInfo({ city, originIata, departDate, returnDate, travelers, onOpenPlace }: Props) {
+export function CityInfo({ city, originIata, departDate, returnDate, travelers, savedIds, onOpenPlace }: Props) {
   const [kind, setKind] = useState<PlaceKind>('sights')
   const summary = useAsync(`summary:${city.id}`, () => loadCitySummary(city))
 
@@ -109,7 +111,7 @@ export function CityInfo({ city, originIata, departDate, returnDate, travelers, 
             </button>
           ))}
         </div>
-        <PlaceList key={kind} city={city} kind={kind} onOpenPlace={onOpenPlace} />
+        <PlaceList key={kind} city={city} kind={kind} savedIds={savedIds} onOpenPlace={onOpenPlace} />
         <p className="source">
           장소 정보: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap 기여자</a>. 평점은 없으며, 지역에 따라 빠진 곳이 있을 수 있어요.
         </p>

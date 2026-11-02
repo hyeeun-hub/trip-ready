@@ -1,19 +1,23 @@
 import { CATEGORY_LABELS, type Place } from '../lib/api/overpass'
 import { loadPlaceSummary } from '../lib/api/wikipedia'
 import { cuisineLabel, mapLinks, placeTagline } from '../lib/places'
+import { isSaved, savePlace, tripsForCity, unsavePlace } from '../lib/saved'
 import { useAsync } from '../lib/useAsync'
-import type { City } from '../types'
+import type { City, Trip } from '../types'
 import { Header } from './Header'
 import { PlacePhoto } from './PlaceCard'
 
 interface Props {
   place: Place
   city: City
+  trips: Trip[]
+  onUpdateTrip: (trip: Trip) => void
   onBack: () => void
 }
 
 /** 장소 상세: 사진·이름·주소·거리·정보 태그·설명 (TODO 2-7) */
-export function PlaceDetail({ place, city, onBack }: Props) {
+export function PlaceDetail({ place, city, trips, onUpdateTrip, onBack }: Props) {
+  const targets = tripsForCity(trips, city)
   const wiki = useAsync(place.wikipedia ? `place:${place.wikipedia}` : null, () => loadPlaceSummary(place.wikipedia ?? ''))
   const summary = wiki.status === 'done' ? wiki.data : null
   const readable = summary && (summary.lang === 'ko' || summary.lang === 'en')
@@ -42,6 +46,27 @@ export function PlaceDetail({ place, city, onBack }: Props) {
         </div>
 
         <section className="review-card">
+          {targets.length === 0 ? (
+            <p className="muted save-hint">이 도시로 여행을 만들면 가고 싶은 곳으로 저장할 수 있어요.</p>
+          ) : (
+            <div className="save-buttons">
+              {targets.map((t) => {
+                const saved = isSaved(t, place.id)
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    className={saved ? 'save-pill saved' : 'save-pill'}
+                    aria-pressed={saved}
+                    onClick={() => onUpdateTrip(saved ? unsavePlace(t, place.id) : savePlace(t, place))}
+                  >
+                    {saved ? '♥ 저장했어요' : '♡ 가고 싶은 곳에 저장'}
+                    {targets.length > 1 && ` (${t.departDate} 여행)`}
+                  </button>
+                )
+              })}
+            </div>
+          )}
           {place.openingHours && (
             <p>
               <strong>영업시간</strong> {place.openingHours}

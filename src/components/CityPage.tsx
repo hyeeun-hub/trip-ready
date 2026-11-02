@@ -41,7 +41,6 @@ export function CityPage({ city, onBack, onCreate, onOpenPlace }: Props) {
           {[city.country, city.nameEn].filter(Boolean).join(' · ')}
         </p>
 
-        <CityInfo city={city} originIata={origin} travelers={travelers} onOpenPlace={onOpenPlace} />
 
         <form className="card form" onSubmit={handleSubmit}>
           <h3>여행 만들기</h3>
@@ -86,6 +85,8 @@ export function CityPage({ city, onBack, onCreate, onOpenPlace }: Props) {
             이 도시로 여행 만들기
           </button>
         </form>
+
+        <CityInfo city={city} originIata={origin} travelers={travelers} onOpenPlace={onOpenPlace} />
       </div>
     </div>
   )

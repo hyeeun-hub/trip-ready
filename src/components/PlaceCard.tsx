@@ -18,13 +18,21 @@ export function PlacePhoto({ place, className }: { place: Place; className: stri
 
 interface Props {
   place: Place
+  saved?: boolean
   onOpen: (place: Place) => void
 }
 
-export function PlaceCard({ place, onOpen }: Props) {
+export function PlaceCard({ place, saved = false, onOpen }: Props) {
   return (
     <button type="button" className="place-card" aria-label={place.name} onClick={() => onOpen(place)}>
-      <PlacePhoto place={place} className="place-photo" />
+      <span className="place-photo-wrap">
+        <PlacePhoto place={place} className="place-photo" />
+        {saved && (
+          <span className="saved-heart" aria-label="저장함">
+            ♥
+          </span>
+        )}
+      </span>
       <span className="place-name">
         <span className="accent">[{CATEGORY_LABELS[place.category]}]</span>
         {place.name}

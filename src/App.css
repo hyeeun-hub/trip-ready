@@ -636,3 +636,96 @@ select {
 .review-card p {
   margin: 0 0 10px;
 }
+
+/* 3단계: 가고 싶은 곳 */
+.save-buttons {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.save-pill {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  background: #a5abf0;
+  color: #fff;
+  padding: 11px 16px;
+  font-weight: 600;
+}
+
+.save-pill.saved {
+  background: var(--accent);
+}
+
+.save-hint {
+  margin-bottom: 12px;
+}
+
+.place-photo-wrap {
+  position: relative;
+  display: block;
+}
+
+.saved-heart {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.saved-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  gap: 12px;
+}
+
+.saved-row {
+  display: grid;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--surface);
+}
+
+.saved-main {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  min-width: 0;
+}
+
+.saved-photo {
+  flex: 0 0 56px;
+  height: 56px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  overflow: hidden;
+}
+
+.saved-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.saved-fields {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 6px;
+  align-items: center;
+}
+
+.saved-fields input {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
