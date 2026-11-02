@@ -67,7 +67,7 @@ export function SavedPlaces({ trip, onUpdate, onOpenPlace }: Props) {
         <span className="badge">{list.length}곳</span>
       </div>
       {list.length === 0 ? (
-        <p className="muted">아직 저장한 곳이 없어요. 아래 여행지 정보에서 장소를 열고 ♡를 눌러 보세요.</p>
+        <p className="muted">아직 저장한 곳이 없어요. 둘러보기 탭에서 장소를 열고 ♡를 눌러 보세요.</p>
       ) : (
         <ul className="saved-list">
           {list.map((item) => (

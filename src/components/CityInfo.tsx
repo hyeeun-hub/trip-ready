@@ -8,20 +8,9 @@ import type { City } from '../types'
 import { AsyncView } from './AsyncView'
 import { PlaceCard } from './PlaceCard'
 
-interface Props {
-  city: City
-  originIata: string
-  departDate?: string
-  returnDate?: string
-  travelers?: number
-  /** 이 여행에 저장한 장소 id (카드에 ♥ 표시) */
-  savedIds?: ReadonlySet<string>
-  onOpenPlace: (place: Place) => void
-}
-
 const SIGHT_CATEGORIES: PlaceCategory[] = ['attraction', 'museum', 'viewpoint', 'history', 'park']
 
-function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; kind: PlaceKind; savedIds?: ReadonlySet<string>; onOpenPlace: (p: Place) => void }) {
+export function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; kind: PlaceKind; savedIds?: ReadonlySet<string>; onOpenPlace: (p: Place) => void }) {
   const [filter, setFilter] = useState('all')
   const places = useAsync(`places:${kind}:${city.id}`, () => loadPlaces(city, kind))
 
@@ -66,18 +55,24 @@ function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; kind: Pl
   )
 }
 
-/** 여행지 한눈에 보기: 소개·항공권·명소·식당 (TODO 2-2~2-7) */
-export function CityInfo({ city, originIata, departDate, returnDate, travelers, savedIds, onOpenPlace }: Props) {
-  const [kind, setKind] = useState<PlaceKind>('sights')
-  const summary = useAsync(`summary:${city.id}`, () => loadCitySummary(city))
+interface IntroProps {
+  city: City
+  originIata: string
+  departDate?: string
+  returnDate?: string
+  travelers?: number
+}
 
+/** 도시 소개(위키백과)와 항공권 검색 링크 (TODO 2-2, 2-5) */
+export function CityIntro({ city, originIata, departDate, returnDate, travelers }: IntroProps) {
+  const summary = useAsync(`summary:${city.id}`, () => loadCitySummary(city))
   return (
     <>
       <AsyncView state={summary} loading="위키백과에서 소개를 불러오는 중이에요.">
         {(s) =>
           s ? (
             <section className="quote-card">
-              <p className="quote">"{s.extract.length > 180 ? `${s.extract.slice(0, 180)}…` : s.extract}"</p>
+              <p className="quote">"{s.extract.length > 220 ? `${s.extract.slice(0, 220)}…` : s.extract}"</p>
               <p className="source">
                 출처:{' '}
                 <a href={s.pageUrl} target="_blank" rel="noreferrer">
@@ -102,20 +97,32 @@ export function CityInfo({ city, originIata, departDate, returnDate, travelers, 
           ))}
         </div>
       </section>
-
-      <section className="section">
-        <div className="segmented" role="tablist">
-          {(['sights', 'food'] as const).map((k) => (
-            <button key={k} type="button" role="tab" aria-selected={kind === k} className={kind === k ? 'active' : ''} onClick={() => setKind(k)}>
-              {k === 'sights' ? '명소' : '식당·카페'}
-            </button>
-          ))}
-        </div>
-        <PlaceList key={kind} city={city} kind={kind} savedIds={savedIds} onOpenPlace={onOpenPlace} />
-        <p className="source">
-          장소 정보: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap 기여자</a>. 평점은 없으며, 지역에 따라 빠진 곳이 있을 수 있어요.
-        </p>
-      </section>
     </>
+  )
+}
+
+export function OsmAttribution() {
+  return (
+    <p className="source">
+      장소 정보: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap 기여자</a>. 평점은 없으며, 지역에 따라 빠진 곳이 있을 수 있어요.
+    </p>
+  )
+}
+
+/** 여행 화면 "둘러보기" 탭: 명소·식당 (TODO 2-3, 2-4, 2-7) */
+export function CityPlaces({ city, savedIds, onOpenPlace }: { city: City; savedIds?: ReadonlySet<string>; onOpenPlace: (place: Place) => void }) {
+  const [kind, setKind] = useState<PlaceKind>('sights')
+  return (
+    <section>
+      <div className="segmented" role="tablist">
+        {(['sights', 'food'] as const).map((k) => (
+          <button key={k} type="button" role="tab" aria-selected={kind === k} className={kind === k ? 'active' : ''} onClick={() => setKind(k)}>
+            {k === 'sights' ? '명소' : '식당·카페'}
+          </button>
+        ))}
+      </div>
+      <PlaceList key={kind} city={city} kind={kind} savedIds={savedIds} onOpenPlace={onOpenPlace} />
+      <OsmAttribution />
+    </section>
   )
 }

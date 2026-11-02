@@ -4,7 +4,7 @@ import { cuisineLabel, mapLinks, placeTagline } from '../lib/places'
 import { isSaved, savePlace, tripsForCity, unsavePlace } from '../lib/saved'
 import { useAsync } from '../lib/useAsync'
 import type { City, Trip } from '../types'
-import { Header } from './Header'
+import { BackLink } from './BackLink'
 import { PlacePhoto } from './PlaceCard'
 
 interface Props {
@@ -12,11 +12,10 @@ interface Props {
   city: City
   trips: Trip[]
   onUpdateTrip: (trip: Trip) => void
-  onBack: () => void
 }
 
 /** 장소 상세: 사진·이름·주소·거리·정보 태그·설명 (TODO 2-7) */
-export function PlaceDetail({ place, city, trips, onUpdateTrip, onBack }: Props) {
+export function PlaceDetail({ place, city, trips, onUpdateTrip }: Props) {
   const targets = tripsForCity(trips, city)
   const wiki = useAsync(place.wikipedia ? `place:${place.wikipedia}` : null, () => loadPlaceSummary(place.wikipedia ?? ''))
   const summary = wiki.status === 'done' ? wiki.data : null
@@ -25,10 +24,10 @@ export function PlaceDetail({ place, city, trips, onUpdateTrip, onBack }: Props)
   const tags = [label, ...place.cuisine.map(cuisineLabel), place.openingHours && '영업시간 정보', place.website && '웹사이트'].filter(Boolean)
 
   return (
-    <div>
-      <Header title="상세 정보" onBack={onBack} />
+    <div className="container narrow">
+      <BackLink />
       <PlacePhoto place={place} className="detail-photo place-hero" />
-      <div className="page">
+      <div>
         <h2 className="detail-title">{place.name}</h2>
         {place.localName && <p className="muted">{place.localName}</p>}
         <p className="address">
