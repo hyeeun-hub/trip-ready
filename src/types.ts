@@ -1,3 +1,5 @@
+import type { Place } from './lib/api/overpass'
+
 /** 날짜는 모두 'YYYY-MM-DD' 문자열로 다룬다. */
 export type ISODate = string
 
@@ -43,6 +45,15 @@ export interface TripMemo {
   text: string
 }
 
+/** 저장한 장소 (PRD F3). 장소 정보는 저장한 때의 값을 그대로 둔다(오프라인에서도 보이도록). */
+export interface SavedPlace {
+  place: Place
+  memo: string
+  /** 방문 예정일 (여행 기간 안) */
+  visitDate?: ISODate
+  savedAt: string
+}
+
 /** 여행 (PRD F1, F5) */
 export interface Trip {
   id: string
@@ -55,6 +66,8 @@ export interface Trip {
   travelers: number
   checklist: ChecklistItem[]
   memos: TripMemo[]
+  /** 가고 싶은 곳 (3단계에서 추가, 예전 데이터에는 없을 수 있음) */
+  savedPlaces?: SavedPlace[]
   createdAt: string
 }
 

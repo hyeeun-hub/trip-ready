@@ -29,7 +29,10 @@ function isTrip(value: unknown): value is Trip {
     isISODate(t.returnDate) &&
     typeof t.travelers === 'number' &&
     Array.isArray(t.checklist) &&
-    Array.isArray(t.memos)
+    Array.isArray(t.memos) &&
+    (t.savedPlaces === undefined ||
+      (Array.isArray(t.savedPlaces) &&
+        t.savedPlaces.every((s: { place?: { id?: unknown } }) => typeof s?.place?.id === 'string')))
   )
 }
 

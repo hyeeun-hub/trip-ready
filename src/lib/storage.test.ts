@@ -35,4 +35,11 @@ describe('여행 저장·불러오기 (1-4)', () => {
     expect(saveTrips([sampleTrip()], full)).toBe(false)
     expect(saveTrips([sampleTrip()], null)).toBe(false)
   })
+  it('저장한 곳도 함께 저장되고, 형식이 깨진 저장 목록이 있는 여행은 건너뛴다 (3-3)', () => {
+    const place = { id: 'node-1', name: 'A', category: 'museum', lat: 1, lon: 2, distanceKm: 0.5, cuisine: [], osmUrl: 'https://www.openstreetmap.org/node/1' } as const
+    const ok = sampleTrip({ id: 'ok', savedPlaces: [{ place: { ...place, cuisine: [] }, memo: '오전', visitDate: '2026-12-02', savedAt: 'x' }] })
+    const broken = { ...sampleTrip({ id: 'broken' }), savedPlaces: [{ memo: '장소 없음' }] }
+    const store = memoryStore({ [TRIPS_KEY]: JSON.stringify([ok, broken]) })
+    expect(loadTrips(store)).toEqual([ok])
+  })
 })
