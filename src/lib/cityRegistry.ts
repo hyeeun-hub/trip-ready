@@ -1,6 +1,6 @@
 import { POPULAR_CITIES } from '../data/cities'
 import type { City, Trip } from '../types'
-import type { Place } from './api/overpass'
+import { loadSnapshot, type Place } from './api/overpass'
 import { defaultStore, type KeyValueStore } from './storage'
 
 const KEY = 'tripready:v2:searched-cities'
@@ -77,6 +77,17 @@ export function findPlace(cityId: string, placeId: string, trips: Trip[], storag
   for (const list of cachedPlaceLists(cityId, storage)) {
     const found = list.find((p) => p.id === placeId)
     if (found) return found
+  }
+  return undefined
+}
+
+/** findPlace로 못 찾으면 미리 받아 둔 인기 도시 데이터에서 찾는다 (새로고침한 장소 주소용) */
+export async function findPlaceAnywhere(cityId: string, placeId: string, trips: Trip[]): Promise<Place | undefined> {
+  const found = findPlace(cityId, placeId, trips)
+  if (found) return found
+  for (const kind of ['sights', 'food'] as const) {
+    const hit = (await loadSnapshot(cityId, kind))?.places.find((p) => p.id === placeId)
+    if (hit) return hit
   }
   return undefined
 }

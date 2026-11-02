@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CATEGORY_LABELS, loadPlaces, topCuisines, type Place, type PlaceCategory, type PlaceKind } from '../lib/api/overpass'
+import { CATEGORY_LABELS, loadPlacesResult, topCuisines, type Place, type PlaceCategory, type PlaceKind } from '../lib/api/overpass'
 import { flightLinks } from '../lib/flights'
 import { cityIntro } from '../lib/intro'
 import { cuisineLabel, filterPlaces } from '../lib/places'
@@ -12,11 +12,11 @@ const SIGHT_CATEGORIES: PlaceCategory[] = ['attraction', 'museum', 'viewpoint', 
 
 export function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; kind: PlaceKind; savedIds?: ReadonlySet<string>; onOpenPlace: (p: Place) => void }) {
   const [filter, setFilter] = useState('all')
-  const places = useAsync(`places:${kind}:${city.id}`, () => loadPlaces(city, kind))
+  const places = useAsync(`places:${kind}:${city.id}`, () => loadPlacesResult(city, kind))
 
   return (
     <AsyncView state={places} loading="오픈스트리트맵에서 불러오는 중이에요. 서버가 붐비면 1분 가까이 걸릴 수 있어요.">
-      {(list) => {
+      {({ places: list, snapshotDate }) => {
         if (list.length === 0) {
           return <p className="muted">이 도시는 오픈스트리트맵에 등록된 {kind === 'sights' ? '명소' : '식당'} 정보가 적어요.</p>
         }
@@ -43,6 +43,7 @@ export function PlaceList({ city, kind, savedIds, onOpenPlace }: { city: City; k
                 </button>
               ))}
             </div>
+            {snapshotDate && <p className="hint">미리 받아 둔 장소 정보예요 (기준일 {snapshotDate}).</p>}
             <div className="card-grid">
               {shown.map((p) => (
                 <PlaceCard key={p.id} place={p} saved={savedIds?.has(p.id)} onOpen={onOpenPlace} />

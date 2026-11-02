@@ -5,10 +5,10 @@ import { ExplorePage } from './components/ExplorePage'
 import { HomePage } from './components/HomePage'
 import { NavBar } from './components/NavBar'
 import { NewTripPage } from './components/NewTripPage'
-import { PlaceDetail } from './components/PlaceDetail'
+import { PlaceRoute } from './components/PlaceRoute'
 import { TripPage } from './components/TripPage'
 import { TripsPage } from './components/TripsPage'
-import { findCity, findPlace } from './lib/cityRegistry'
+import { findCity } from './lib/cityRegistry'
 import { todayISO } from './lib/date'
 import { goToTrip } from './lib/navigation'
 import { href, navigate, useRoute } from './lib/router'
@@ -88,9 +88,8 @@ function App() {
       }
       case 'place': {
         const city = findCity(route.cityId, trips)
-        const place = findPlace(route.cityId, route.placeId, trips)
-        return city && place ? (
-          <PlaceDetail place={place} city={city} trips={trips} onUpdateTrip={updateTrip} />
+        return city ? (
+          <PlaceRoute key={route.placeId} city={city} placeId={route.placeId} trips={trips} onUpdateTrip={updateTrip} />
         ) : (
           <NotFound message="장소 정보를 찾을 수 없어요." />
         )

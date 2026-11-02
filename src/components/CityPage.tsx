@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { prefetchPlaces } from '../lib/api/overpass'
 import { openPlace } from '../lib/navigation'
 import { href, type CityTab } from '../lib/router'
 import { tripsForCity } from '../lib/saved'
@@ -17,6 +19,8 @@ interface Props {
 /** 도시: 탭(소개·항공권 / 명소 / 식당·카페)과 여행 만들기 (TODO 1-3, 2-2~2-7) */
 export function CityPage({ city, tab, trips }: Props) {
   const myTrips = tripsForCity(trips, city)
+  // 검색 도시는 서버가 느려서, 화면을 열자마자 명소·식당을 미리 불러 둔다 (인기 도시는 미리 받은 데이터라 바로 뜸)
+  useEffect(() => prefetchPlaces(city), [city])
   return (
     <div className="container">
       <BackLink />

@@ -149,11 +149,50 @@ export async function queryOverpass<T>(
   throw lastError
 }
 
-/** 도시의 명소 또는 식당 (하루 캐시) */
-export function loadPlaces(city: City, kind: PlaceKind): Promise<Place[]> {
-  return cached(`osm:${kind}:${city.id}:${city.lat},${city.lon}`, async () =>
-    parsePlaces(await queryOverpass<OverpassResponse>(buildQuery(city, kind)), city),
-  )
+export interface PlacesResult {
+  places: Place[]
+  /** 미리 받아 둔 데이터면 받은 날짜, 실시간이면 없음 */
+  snapshotDate?: string
+}
+
+type Snapshot = { fetchedAt: string; places: Place[] }
+
+/**
+ * 인기 도시 20곳은 미리 받아 둔 데이터(src/data/places, `npm run places:update`)를 쓴다 (TODO 9-1).
+ * 공개 Overpass 서버는 한 번에 25~60초가 걸려서, 인기 도시는 서버를 기다리지 않게 한다. 파일은 필요할 때만 불러온다.
+ */
+const SNAPSHOTS = import.meta.glob<Snapshot>('../../data/places/*.json', { import: 'default' })
+
+export async function loadSnapshot(cityId: string, kind: PlaceKind, files = SNAPSHOTS): Promise<Snapshot | null> {
+  const load = files[`../../data/places/${cityId}-${kind}.json`]
+  return load ? load() : null
+}
+
+/** 같은 도시·종류를 동시에 여러 번 요청하면(미리 불러오기 + 탭) 한 번만 보낸다 */
+const inFlight = new Map<string, Promise<PlacesResult>>()
+
+export function loadPlacesResult(city: City, kind: PlaceKind): Promise<PlacesResult> {
+  const key = `${kind}:${city.id}:${city.lat},${city.lon}`
+  const running = inFlight.get(key)
+  if (running) return running
+  const job = (async (): Promise<PlacesResult> => {
+    const snapshot = await loadSnapshot(city.id, kind)
+    if (snapshot) return { places: snapshot.places, snapshotDate: snapshot.fetchedAt }
+    const places = await cached(`osm:${key}`, async () => parsePlaces(await queryOverpass<OverpassResponse>(buildQuery(city, kind)), city))
+    return { places }
+  })().finally(() => inFlight.delete(key))
+  inFlight.set(key, job)
+  return job
+}
+
+/** 도시의 명소 또는 식당 (인기 도시는 미리 받은 데이터, 그 밖은 실시간 + 하루 캐시) */
+export async function loadPlaces(city: City, kind: PlaceKind): Promise<Place[]> {
+  return (await loadPlacesResult(city, kind)).places
+}
+
+/** 도시 화면을 열자마자 명소·식당을 미리 불러 둔다(결과는 캐시에 남음). 실패는 탭을 열 때 다시 보여준다. */
+export function prefetchPlaces(city: City): void {
+  for (const kind of ['sights', 'food'] as PlaceKind[]) void loadPlacesResult(city, kind).catch(() => {})
 }
 
 /** 식당 목록에서 많이 나오는 음식 종류 (필터 칩용) */
