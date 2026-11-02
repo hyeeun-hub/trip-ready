@@ -21,7 +21,7 @@ interface Props {
   onUpdate: (trip: Trip) => void
 }
 
-/** 금액 입력칸: 포커스를 잃을 때 저장, 숫자가 아니면 오류 */
+/** 금액 입력칸: 칸을 벗어나거나 Enter를 누르면 저장, 숫자가 아니면 오류 */
 function WonInput({ value, label, onSave }: { value: number; label: string; onSave: (value: number) => void }) {
   const [text, setText] = useState(value ? value.toLocaleString('ko-KR') : '')
   const [invalid, setInvalid] = useState(false)
@@ -35,6 +35,7 @@ function WonInput({ value, label, onSave }: { value: number; label: string; onSa
         placeholder="0"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
         onBlur={() => {
           const parsed = parseWon(text)
           setInvalid(parsed === null)
