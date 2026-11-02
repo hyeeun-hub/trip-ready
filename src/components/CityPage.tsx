@@ -21,7 +21,7 @@ export function CityPage({ city, tab, trips }: Props) {
     <div className="container">
       <BackLink />
       <div className="city-hero">
-        <CityPhoto city={city} className="city-hero-photo" />
+        <CityPhoto city={city} className="city-hero-photo" width={1280} credit />
         <div className="city-hero-text">
           <h1>{city.name}</h1>
           <p>{[city.country, city.nameEn].filter(Boolean).join(' · ')}</p>

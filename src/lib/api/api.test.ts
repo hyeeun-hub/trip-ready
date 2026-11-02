@@ -11,7 +11,7 @@ import wikiParis from './__fixtures__/wiki-ko-paris-disambig.json'
 import { cached, distanceKm, HttpError } from './http'
 import { createRateLimiter, parseSearch, searchCities, searchUrl, searchVariants } from './nominatim'
 import { buildQuery, parsePlaces, queryOverpass, topCuisines, type OverpassResponse } from './overpass'
-import { parseSummary, parseWikipediaTag, summaryUrl } from './wikipedia'
+import { imageCreditUrl, parseSummary, parseWikipediaTag, sizedImageUrl, summaryUrl } from './wikipedia'
 
 // 고정 응답은 2026-11-02 실제 API에서 받아 줄인 것이다 (external-api-check 스킬 3번).
 // 오픈스트리트맵 고정 응답은 방콕 왕궁 부근(13.7525, 100.4935)을 중심으로 받았으므로 같은 중심을 쓴다.
@@ -203,5 +203,41 @@ describe('캐시와 거리 (2-6)', () => {
   it('거리 계산 (서울-부산 약 325km)', () => {
     expect(Math.round(distanceKm(37.5665, 126.978, 35.1796, 129.0756))).toBeGreaterThan(310)
     expect(Math.round(distanceKm(37.5665, 126.978, 35.1796, 129.0756))).toBeLessThan(340)
+  })
+})
+
+describe('고화질 사진 (7-3)', () => {
+  const bangkokSummary = {
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bangkok_montage_3.jpg/330px-Bangkok_montage_3.jpg?utm_source=ko.wikipedia.org',
+    originalUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Bangkok_montage_3.jpg?utm_source=ko.wikipedia.org',
+    originalWidth: 1500,
+  }
+
+  it('원본이 더 크면 썸네일 주소의 너비만 바꾼다', () => {
+    expect(sizedImageUrl(bangkokSummary, 1280)).toBe(
+      'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bangkok_montage_3.jpg/1280px-Bangkok_montage_3.jpg?utm_source=ko.wikipedia.org',
+    )
+    expect(sizedImageUrl(bangkokSummary, 500)).toContain('/500px-Bangkok_montage_3.jpg')
+  })
+
+  it('원본이 원하는 너비보다 작으면 원본을 쓴다 (도쿄 원본 593px)', () => {
+    expect(sizedImageUrl({ ...bangkokSummary, originalWidth: 593 }, 960)).toBe(bangkokSummary.originalUrl)
+  })
+
+  it('정보가 모자라면 있는 주소를 쓴다', () => {
+    expect(sizedImageUrl({ imageUrl: undefined, originalUrl: 'https://x/y.jpg' }, 960)).toBe('https://x/y.jpg')
+    expect(sizedImageUrl({}, 960)).toBeUndefined()
+  })
+
+  it('사진 출처는 위키미디어 공용 파일 페이지', () => {
+    expect(imageCreditUrl(bangkokSummary)).toBe('https://commons.wikimedia.org/wiki/File:Bangkok_montage_3.jpg')
+    expect(imageCreditUrl({ imageUrl: bangkokSummary.imageUrl })).toBe('https://commons.wikimedia.org/wiki/File:Bangkok_montage_3.jpg')
+    expect(imageCreditUrl({})).toBeUndefined()
+  })
+
+  it('실제 응답에서 원본 정보를 꺼낸다', () => {
+    const s = parseSummary(wikiBangkok, 'ko')
+    expect(s?.originalUrl).toMatch(/^https:\/\/upload\.wikimedia\.org\//)
+    expect(s?.originalWidth).toBeGreaterThan(330)
   })
 })

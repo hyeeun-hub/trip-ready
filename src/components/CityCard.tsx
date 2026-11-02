@@ -17,7 +17,7 @@ export function CityCard({ city, size = 'small' }: Props) {
       href={href({ page: 'city', cityId: city.id, tab: 'about' })}
       onClick={() => rememberCity(city)}
     >
-      <CityPhoto city={city} className="city-photo" />
+      <CityPhoto city={city} className="city-photo" width={size === 'large' ? 960 : 500} />
       <span className="city-name">
         {city.country && <span className="accent">[{city.country}]</span>}
         {city.name}

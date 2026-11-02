@@ -1516,3 +1516,35 @@ select {
 .leaflet-container {
   font: inherit;
 }
+
+/* 7-3: 사진 출처 */
+.city-hero-photo,
+.place-hero {
+  position: relative;
+}
+
+.photo-credit {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 1;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 0.68rem;
+  text-decoration: none;
+}
+
+.site-footer {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 20px 20px 32px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.site-footer a {
+  color: var(--muted);
+}

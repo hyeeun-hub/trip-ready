@@ -34,7 +34,7 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
     <div className="container">
       <BackLink label="내 여행" />
       <div className="city-hero short">
-        <CityPhoto city={trip.city} className="city-hero-photo" />
+        <CityPhoto city={trip.city} className="city-hero-photo" width={1280} credit />
         <div className="city-hero-text">
           <h1>
             {trip.city.name} 여행 <span className="badge light">{dDayLabel(today, trip)}</span>

@@ -28,7 +28,7 @@ export function PlaceDetail({ place, city, trips, onUpdateTrip }: Props) {
   return (
     <div className="container narrow">
       <BackLink />
-      <PlacePhoto place={place} className="detail-photo place-hero" />
+      <PlacePhoto place={place} className="detail-photo place-hero" width={960} credit />
       <div>
         <h2 className="detail-title">{place.name}</h2>
         {place.localName && <p className="muted">{place.localName}</p>}

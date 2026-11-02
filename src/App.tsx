@@ -104,6 +104,10 @@ function App() {
         </p>
       )}
       <main className="app">{page()}</main>
+      <footer className="site-footer">
+        사진: 위키백과·<a href="https://commons.wikimedia.org/" target="_blank" rel="noreferrer">위키미디어 공용</a> (각 사진 출처는 화면 위쪽 사진의 ⓒ 링크) · 지도·장소:{' '}
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap 기여자</a>
+      </footer>
     </>
   )
 }
