@@ -1,8 +1,67 @@
+import { useState } from 'react'
+import { CityPage } from './components/CityPage'
+import { Home } from './components/Home'
+import { TripPage } from './components/TripPage'
+import { todayISO } from './lib/date'
+import { loadTrips, saveTrips } from './lib/storage'
+import { createTrip } from './lib/trips'
+import type { City, NewTrip, Trip } from './types'
+import './App.css'
+
+type View = { name: 'home' } | { name: 'city'; city: City } | { name: 'trip'; tripId: string }
+
 function App() {
+  const [trips, setTrips] = useState<Trip[]>(() => loadTrips())
+  const [view, setView] = useState<View>({ name: 'home' })
+  const [saveFailed, setSaveFailed] = useState(false)
+  const today = todayISO()
+
+  function updateTrips(next: Trip[]) {
+    setTrips(next)
+    setSaveFailed(!saveTrips(next))
+  }
+
+  function go(next: View) {
+    setView(next)
+    window.scrollTo(0, 0)
+  }
+
+  function handleCreate(input: NewTrip) {
+    const trip = createTrip(input)
+    updateTrips([...trips, trip])
+    go({ name: 'trip', tripId: trip.id })
+  }
+
+  const trip = view.name === 'trip' ? trips.find((t) => t.id === view.tripId) : undefined
+
   return (
-    <main style={{ maxWidth: 480, margin: '0 auto', padding: '24px 16px' }}>
-      <h1>어디로 떠날까요?</h1>
-      <p>도시를 고르면 소개·명소·식당·항공권 검색을 한 화면에 모아 드려요.</p>
+    <main className="app">
+      {saveFailed && (
+        <p className="save-warning" role="alert">
+          이 브라우저에 저장할 수 없어서 새로고침하면 내용이 사라져요.
+        </p>
+      )}
+      {view.name === 'city' ? (
+        <CityPage city={view.city} onBack={() => go({ name: 'home' })} onCreate={handleCreate} />
+      ) : trip ? (
+        <TripPage
+          trip={trip}
+          today={today}
+          onBack={() => go({ name: 'home' })}
+          onUpdate={(next) => updateTrips(trips.map((t) => (t.id === next.id ? next : t)))}
+          onDelete={() => {
+            updateTrips(trips.filter((t) => t.id !== trip.id))
+            go({ name: 'home' })
+          }}
+        />
+      ) : (
+        <Home
+          trips={trips}
+          today={today}
+          onSelectCity={(city) => go({ name: 'city', city })}
+          onOpenTrip={(id) => go({ name: 'trip', tripId: id })}
+        />
+      )}
     </main>
   )
 }
