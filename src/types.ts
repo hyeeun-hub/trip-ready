@@ -74,6 +74,22 @@ export interface Expense {
   memo: string
 }
 
+/** 기록의 때 (PRD F6) */
+export type JournalSlot = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'other'
+
+/** 여행 기록 한 건: 사진 1장(선택) + 한 줄 멘트 (PRD F6) */
+export interface JournalEntry {
+  id: string
+  date: ISODate
+  slot: JournalSlot
+  caption: string
+  /** IndexedDB에 저장한 사진 id (사진 없이 글만 남겨도 됨) */
+  photoId?: string
+  /** 저장한 장소 이름 (선택) */
+  placeName?: string
+  createdAt: string
+}
+
 /** 여행 (PRD F1, F5) */
 export interface Trip {
   id: string
@@ -91,6 +107,8 @@ export interface Trip {
   /** 예산과 지출 (4단계에서 추가) */
   budget?: Budget
   expenses?: Expense[]
+  /** 여행 기록 (8단계에서 추가) */
+  journal?: JournalEntry[]
   createdAt: string
 }
 

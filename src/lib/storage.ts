@@ -1,5 +1,6 @@
 import type { Trip } from '../types'
 import { isISODate } from './date'
+import { migrateMemos } from './journal'
 
 export const TRIPS_KEY = 'tripready:v2:trips'
 
@@ -36,7 +37,9 @@ function isTrip(value: unknown): value is Trip {
     (t.budget === undefined || (typeof t.budget === 'object' && t.budget !== null && typeof (t.budget as { total?: unknown }).total === 'number')) &&
     (t.expenses === undefined ||
       (Array.isArray(t.expenses) &&
-        t.expenses.every((e: { id?: unknown; amount?: unknown; date?: unknown }) => typeof e?.id === 'string' && typeof e.amount === 'number' && isISODate(e.date))))
+        t.expenses.every((e: { id?: unknown; amount?: unknown; date?: unknown }) => typeof e?.id === 'string' && typeof e.amount === 'number' && isISODate(e.date)))) &&
+    (t.journal === undefined ||
+      (Array.isArray(t.journal) && t.journal.every((e: { id?: unknown; date?: unknown }) => typeof e?.id === 'string' && isISODate(e.date))))
   )
 }
 
@@ -47,7 +50,8 @@ export function loadTrips(store: KeyValueStore | null = defaultStore()): Trip[] 
     const raw = store.getItem(TRIPS_KEY)
     if (!raw) return []
     const parsed: unknown = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed.filter(isTrip) : []
+    // 메모 탭이 여행 기록 탭으로 합쳐져(8단계) 예전 메모는 불러올 때 기록으로 옮긴다
+    return Array.isArray(parsed) ? parsed.filter(isTrip).map(migrateMemos) : []
   } catch {
     return []
   }

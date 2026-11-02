@@ -10,13 +10,23 @@ describe('여행 저장·불러오기 (1-4)', () => {
       memos: [{ id: 'm', date: '2026-12-01', text: '도착' }],
     })
     expect(saveTrips([trip], store)).toBe(true)
-    expect(loadTrips(store)).toEqual([trip])
+    // 8단계부터 메모는 불러올 때 여행 기록(기타)으로 옮겨진다
+    expect(loadTrips(store)).toEqual([
+      { ...trip, memos: [], journal: [{ id: 'memo-m', date: '2026-12-01', slot: 'other', caption: '도착', createdAt: '2026-12-01T00:00:00.000Z' }] },
+    ])
   })
 
   it('값이 없거나 깨졌으면 빈 목록', () => {
     expect(loadTrips(memoryStore())).toEqual([])
     expect(loadTrips(memoryStore({ [TRIPS_KEY]: '{oops' }))).toEqual([])
     expect(loadTrips(null)).toEqual([])
+  })
+
+  it('예전 메모는 불러올 때 여행 기록으로 옮겨진다 (8단계)', () => {
+    const old = sampleTrip({ memos: [{ id: 'm', date: '2026-12-01', text: '도착' }] })
+    const [loaded] = loadTrips(memoryStore({ [TRIPS_KEY]: JSON.stringify([old]) }))
+    expect(loaded.memos).toEqual([])
+    expect(loaded.journal?.map((e) => e.caption)).toEqual(['도착'])
   })
 
   it('형식이 맞지 않는 여행만 건너뛴다', () => {
