@@ -1,18 +1,21 @@
 import { useState, type FormEvent } from 'react'
 import { ORIGINS } from '../data/origins'
-import { cityGradient } from '../lib/cities'
 import { validateNewTrip } from '../lib/trips'
+import type { Place } from '../lib/api/overpass'
 import type { City, NewTrip } from '../types'
+import { CityInfo } from './CityInfo'
+import { CityPhoto } from './CityPhoto'
 import { Header } from './Header'
 
 interface Props {
   city: City
   onBack: () => void
   onCreate: (trip: NewTrip) => void
+  onOpenPlace: (place: Place) => void
 }
 
-/** 도시 화면: 2단계에서 소개·명소·식당이 들어오고, 지금은 여행 만들기 (TODO 1-3) */
-export function CityPage({ city, onBack, onCreate }: Props) {
+/** 도시 화면: 여행지 정보와 여행 만들기 (TODO 1-3, 2-2~2-7) */
+export function CityPage({ city, onBack, onCreate, onOpenPlace }: Props) {
   const [origin, setOrigin] = useState(ORIGINS[0].iata)
   const [departDate, setDepartDate] = useState('')
   const [returnDate, setReturnDate] = useState('')
@@ -31,14 +34,14 @@ export function CityPage({ city, onBack, onCreate }: Props) {
   return (
     <div>
       <Header title={city.name} onBack={onBack} />
-      <div className="detail-photo" style={{ background: cityGradient(city.id) }}>
-        <span className="city-photo-label">{city.nameEn}</span>
-      </div>
+      <CityPhoto city={city} className="detail-photo" />
       <div className="page">
         <h2 className="detail-title">{city.name}</h2>
         <p className="muted">
-          {city.country} · {city.nameEn}
+          {[city.country, city.nameEn].filter(Boolean).join(' · ')}
         </p>
+
+        <CityInfo city={city} originIata={origin} travelers={travelers} onOpenPlace={onOpenPlace} />
 
         <form className="card form" onSubmit={handleSubmit}>
           <h3>여행 만들기</h3>
