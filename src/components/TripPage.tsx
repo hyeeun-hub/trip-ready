@@ -1,3 +1,4 @@
+import { formatWon, summarize } from '../lib/budget'
 import { progress } from '../lib/checklist'
 import { openPlace } from '../lib/navigation'
 import { href, type TripTab } from '../lib/router'
@@ -5,6 +6,7 @@ import { savedPlaces } from '../lib/saved'
 import { addMemo, dDayLabel, removeMemo } from '../lib/trips'
 import type { Trip } from '../types'
 import { BackLink } from './BackLink'
+import { BudgetTab } from './BudgetTab'
 import { Checklist } from './Checklist'
 import { CityIntro, CityPlaces } from './CityInfo'
 import { CityPhoto } from './CityPhoto'
@@ -20,9 +22,10 @@ interface Props {
   onDelete: () => void
 }
 
-/** 내 여행: 탭(한눈에 / 가고 싶은 곳 / 준비물 / 메모 / 둘러보기) */
+/** 내 여행: 탭(한눈에 / 가고 싶은 곳 / 예산 / 준비물 / 메모 / 둘러보기) */
 export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
   const saved = savedPlaces(trip)
+  const money = summarize(trip)
   const route = (t: TripTab) => ({ page: 'trip' as const, tripId: trip.id, tab: t })
 
   return (
@@ -45,6 +48,7 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
         tabs={[
           { value: 'overview', label: '한눈에', route: route('overview') },
           { value: 'saved', label: `가고 싶은 곳 ${saved.length}`, route: route('saved') },
+          { value: 'budget', label: '예산', route: route('budget') },
           { value: 'prep', label: '준비물', route: route('prep') },
           { value: 'memo', label: '메모', route: route('memo') },
           { value: 'explore', label: '둘러보기', route: route('explore') },
@@ -65,6 +69,11 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
               <span className="summary-label">가고 싶은 곳</span>
               <span className="summary-value">{saved.length}곳</span>
               <span className="muted">{saved.filter((s) => s.visitDate).length}곳 날짜 정함</span>
+            </a>
+            <a className={money.warnings.length > 0 ? 'summary-card warn' : 'summary-card'} href={href(route('budget'))}>
+              <span className="summary-label">예산</span>
+              <span className="summary-value">{money.usedPercent === null ? formatWon(money.spent) : `${money.usedPercent}%`}</span>
+              <span className="muted">{money.total > 0 ? `남은 돈 ${formatWon(money.remaining)}` : '총예산 미정'}</span>
             </a>
             <a className="summary-card" href={href(route('memo'))}>
               <span className="summary-label">메모</span>
@@ -102,6 +111,8 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
           )}
         </>
       )}
+
+      {tab === 'budget' && <BudgetTab trip={trip} today={today} onUpdate={onUpdate} />}
 
       {tab === 'prep' && <Checklist items={trip.checklist} onChange={(checklist) => onUpdate({ ...trip, checklist })} />}
 
