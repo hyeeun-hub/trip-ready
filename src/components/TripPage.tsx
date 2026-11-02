@@ -2,6 +2,7 @@ import { formatWon, summarize } from '../lib/budget'
 import { progress } from '../lib/checklist'
 import { openPlace } from '../lib/navigation'
 import { href, type TripTab } from '../lib/router'
+import { toPoints } from '../lib/mapPoints'
 import { savedPlaces } from '../lib/saved'
 import { addMemo, dDayLabel, removeMemo } from '../lib/trips'
 import type { Trip } from '../types'
@@ -11,6 +12,7 @@ import { Checklist } from './Checklist'
 import { CityIntro, CityPlaces } from './CityInfo'
 import { CityPhoto } from './CityPhoto'
 import { Memos } from './Memos'
+import { PlaceMap } from './PlaceMap'
 import { SavedPlaces } from './SavedPlaces'
 import { Tabs } from './Tabs'
 
@@ -101,6 +103,23 @@ export function TripPage({ trip, tab, today, onUpdate, onDelete }: Props) {
 
       {tab === 'saved' && (
         <>
+          {saved.length > 0 && (
+            <section className="card map-card">
+              <h3>저장한 곳 지도</h3>
+              <PlaceMap
+                center={trip.city}
+                points={toPoints(
+                  saved.map((s) => s.place),
+                  new Set(saved.map((s) => s.place.id)),
+                )}
+                height={260}
+                onSelect={(id) => {
+                  const found = saved.find((s) => s.place.id === id)
+                  if (found) openPlace(trip.city, found.place)
+                }}
+              />
+            </section>
+          )}
           <SavedPlaces trip={trip} onUpdate={onUpdate} onOpenPlace={(p) => openPlace(trip.city, p)} />
           {saved.length === 0 && (
             <div className="link-row">

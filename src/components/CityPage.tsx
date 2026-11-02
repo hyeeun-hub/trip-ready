@@ -4,6 +4,7 @@ import { tripsForCity } from '../lib/saved'
 import type { City, Trip } from '../types'
 import { BackLink } from './BackLink'
 import { CityIntro, OsmAttribution, PlaceList } from './CityInfo'
+import { CityMap } from './CityMap'
 import { CityPhoto } from './CityPhoto'
 import { Tabs } from './Tabs'
 
@@ -43,11 +44,14 @@ export function CityPage({ city, tab, trips }: Props) {
           { value: 'about', label: '소개·항공권', route: { page: 'city', cityId: city.id, tab: 'about' } },
           { value: 'sights', label: '명소', route: { page: 'city', cityId: city.id, tab: 'sights' } },
           { value: 'food', label: '식당·카페', route: { page: 'city', cityId: city.id, tab: 'food' } },
+          { value: 'map', label: '지도', route: { page: 'city', cityId: city.id, tab: 'map' } },
         ]}
       />
 
       {tab === 'about' ? (
         <CityIntro city={city} originIata="ICN" />
+      ) : tab === 'map' ? (
+        <CityMap city={city} onOpenPlace={(p) => openPlace(city, p)} />
       ) : (
         <>
           <PlaceList key={tab} city={city} kind={tab === 'sights' ? 'sights' : 'food'} onOpenPlace={(p) => openPlace(city, p)} />

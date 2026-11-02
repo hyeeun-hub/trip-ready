@@ -8,6 +8,7 @@ describe('페이지 주소', () => {
     { page: 'explore', query: '교토' },
     { page: 'city', cityId: 'tokyo', tab: 'about' },
     { page: 'city', cityId: 'osm-relation-357794', tab: 'food' },
+    { page: 'city', cityId: 'tokyo', tab: 'map' },
     { page: 'new', cityId: 'tokyo' },
     { page: 'new' },
     { page: 'trips' },

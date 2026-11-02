@@ -1,11 +1,13 @@
 import { CATEGORY_LABELS, type Place } from '../lib/api/overpass'
 import { loadPlaceSummary } from '../lib/api/wikipedia'
 import { cuisineLabel, mapLinks, placeTagline } from '../lib/places'
+import { toPoints } from '../lib/mapPoints'
 import { isSaved, savePlace, tripsForCity, unsavePlace } from '../lib/saved'
 import { useAsync } from '../lib/useAsync'
 import type { City, Trip } from '../types'
 import { BackLink } from './BackLink'
 import { PlacePhoto } from './PlaceCard'
+import { PlaceMap } from './PlaceMap'
 
 interface Props {
   place: Place
@@ -81,6 +83,7 @@ export function PlaceDetail({ place, city, trips, onUpdateTrip }: Props) {
             </p>
           )}
           {!place.openingHours && !place.description && !readable && <p className="muted">오픈스트리트맵에 등록된 설명이 없어요.</p>}
+          <PlaceMap center={place} points={toPoints([place])} zoom={16} height={200} />
           <div className="link-row">
             {mapLinks(place).map((l) => (
               <a key={l.label} className="link-button" href={l.url} target="_blank" rel="noreferrer">

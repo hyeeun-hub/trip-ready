@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export type CityTab = 'about' | 'sights' | 'food'
+export type CityTab = 'about' | 'sights' | 'food' | 'map'
 export type TripTab = 'overview' | 'saved' | 'budget' | 'prep' | 'memo' | 'explore'
 
 /** 페이지 주소 (#/...). 서버 없이 GitHub Pages에서 동작하고, 브라우저 뒤로 가기가 된다. */
@@ -13,7 +13,7 @@ export type Route =
   | { page: 'trip'; tripId: string; tab: TripTab }
   | { page: 'place'; cityId: string; placeId: string }
 
-const CITY_TABS: CityTab[] = ['about', 'sights', 'food']
+const CITY_TABS: CityTab[] = ['about', 'sights', 'food', 'map']
 const TRIP_TABS: TripTab[] = ['overview', 'saved', 'budget', 'prep', 'memo', 'explore']
 
 export function parseRoute(hash: string): Route {
