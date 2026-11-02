@@ -1653,3 +1653,183 @@ button:disabled {
   opacity: 0.55;
   cursor: default;
 }
+
+/* 10단계: 여행 기록 페이지·콜라주 꾸미기 */
+.summary-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.segmented.small button {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.segmented.wrap {
+  flex-wrap: wrap;
+}
+
+.album-grid {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.album-tile {
+  position: relative;
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  color: #fff;
+  text-decoration: none;
+}
+
+.album-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: 2px;
+  padding: 24px 10px 8px;
+  font-size: 0.75rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+
+.album-caption span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.journal-trip .card-head h3 {
+  font-size: 1.05rem;
+}
+
+.studio {
+  display: grid;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.studio-preview {
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.collage-canvas {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.studio-controls {
+  display: grid;
+  gap: 14px;
+}
+
+.control {
+  display: grid;
+  gap: 6px;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.pick-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 8px;
+}
+
+.pick {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  opacity: 0.55;
+}
+
+.pick.on {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.pick-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pick-no {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.swatches {
+  display: flex;
+  gap: 10px;
+}
+
+.swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  padding: 0;
+}
+
+.swatch.on {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (min-width: 860px) {
+  .studio {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 600px) {
+  .summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

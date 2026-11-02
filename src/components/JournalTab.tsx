@@ -1,28 +1,18 @@
 import { useRef, useState, type FormEvent } from 'react'
-import { MAX_COLLAGE_PHOTOS } from '../lib/collage'
-import { downloadBlob, renderCollage } from '../lib/collageRender'
+import { downloadBlob } from '../lib/collageRender'
 import { resizePhoto } from '../lib/image'
-import { addEntry, dayLabel, defaultEntryDate, groupByDay, journalOf, photoEntries, removeEntry, SLOT_NAMES, SLOTS, validateEntry } from '../lib/journal'
+import { addEntry, dayLabel, defaultEntryDate, groupByDay, journalOf, removeEntry, SLOT_NAMES, SLOTS, validateEntry } from '../lib/journal'
 import { exportJournal, importJournal } from '../lib/journalBackup'
 import { indexedDbPhotos } from '../lib/photoStore'
 import { savedPlaces } from '../lib/saved'
-import { useAsync } from '../lib/useAsync'
 import type { JournalEntry, JournalSlot, Trip } from '../types'
+import { CollageStudio } from './CollageStudio'
+import { PhotoView } from './PhotoView'
 
 interface Props {
   trip: Trip
   today: string
   onUpdate: (trip: Trip) => void
-}
-
-/** 저장소의 사진을 화면에 띄울 주소 */
-function PhotoView({ photoId, className, alt }: { photoId: string; className: string; alt: string }) {
-  const photo = useAsync(`photo:${photoId}`, async () => {
-    const blob = await indexedDbPhotos.get(photoId)
-    return blob ? URL.createObjectURL(blob) : null
-  })
-  if (photo.status !== 'done' || !photo.data) return <span className={`${className} photo-missing`}>📷</span>
-  return <img className={className} src={photo.data} alt={alt} loading="lazy" />
 }
 
 function EntryForm({ trip, today, onAdd }: { trip: Trip; today: string; onAdd: (entry: JournalEntry) => void }) {
@@ -120,63 +110,6 @@ function EntryForm({ trip, today, onAdd }: { trip: Trip; today: string; onAdd: (
   )
 }
 
-function CollageMaker({ trip }: { trip: Trip }) {
-  const days = groupByDay(trip).filter((d) => d.entries.some((e) => e.photoId))
-  const [day, setDay] = useState('')
-  const [result, setResult] = useState<{ url: string; blob: Blob } | null>(null)
-  const [status, setStatus] = useState<'idle' | 'working' | 'error'>('idle')
-  const entries = photoEntries(trip, day || undefined)
-
-  async function make() {
-    setStatus('working')
-    try {
-      const blobs: Blob[] = []
-      for (const e of entries.slice(0, MAX_COLLAGE_PHOTOS)) {
-        const blob = e.photoId ? await indexedDbPhotos.get(e.photoId) : undefined
-        if (blob) blobs.push(blob)
-      }
-      const label = day ? `${dayLabel(trip, day)} · ${day}` : `${trip.departDate} ~ ${trip.returnDate}`
-      const blob = await renderCollage({ title: `${trip.city.name} 여행`, subtitle: label, photos: blobs })
-      if (result) URL.revokeObjectURL(result.url)
-      setResult({ blob, url: URL.createObjectURL(blob) })
-      setStatus('idle')
-    } catch {
-      setStatus('error')
-    }
-  }
-
-  if (days.length === 0) return <p className="muted">사진이 있는 기록이 생기면 콜라주를 만들 수 있어요.</p>
-  return (
-    <div className="collage-maker">
-      <div className="inline-form">
-        <select aria-label="콜라주 범위" value={day} onChange={(e) => setDay(e.target.value)}>
-          <option value="">여행 전체</option>
-          {days.map((d) => (
-            <option key={d.date} value={d.date}>
-              {d.label} ({d.date})
-            </option>
-          ))}
-        </select>
-        <button type="button" className="secondary" onClick={make} disabled={status === 'working'}>
-          {status === 'working' ? '만드는 중…' : '콜라주 만들기'}
-        </button>
-      </div>
-      <p className="muted">
-        사진 {Math.min(entries.length, MAX_COLLAGE_PHOTOS)}장으로 만들어요{entries.length > MAX_COLLAGE_PHOTOS ? ` (최대 ${MAX_COLLAGE_PHOTOS}장)` : ''}.
-      </p>
-      {status === 'error' && <p className="errors">콜라주를 만들지 못했어요. 다시 시도해 주세요.</p>}
-      {result && (
-        <>
-          <img className="collage-preview" src={result.url} alt="만든 콜라주" />
-          <button type="button" className="primary" onClick={() => downloadBlob(result.blob, `${trip.city.name}-여행-콜라주.jpg`)}>
-            이미지 저장
-          </button>
-        </>
-      )}
-    </div>
-  )
-}
-
 /** 여행 "기록" 탭: 사진·멘트 남기기, 일차별 타임라인, 콜라주, 내보내기/불러오기 (TODO 8-1~8-3) */
 export function JournalTab({ trip, today, onUpdate }: Props) {
   const [message, setMessage] = useState<string | null>(null)
@@ -239,8 +172,8 @@ export function JournalTab({ trip, today, onUpdate }: Props) {
       )}
 
       <section className="card">
-        <h3>추억 만들기</h3>
-        <CollageMaker trip={trip} />
+        <h3>콜라주 꾸미기</h3>
+        <CollageStudio trip={trip} />
       </section>
 
       <section className="card">
