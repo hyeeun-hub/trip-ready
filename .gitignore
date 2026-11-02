@@ -26,3 +26,4 @@ dist-ssr
 
 # Playwright MCP 작업 파일
 .playwright-mcp
+.claude/layout-reference.png
